@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install toolchain
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm --needed iverilog verilator
+
+      - name: Lint (Verilator)
+        run: verilator --lint-only -Wall rtl/*.v
+
+      - name: Simulate (Icarus Verilog)
+        run: |
+          mkdir -p build
+          iverilog -g2012 -Wall -o build/sim.vvp rtl/*.v sim/tb_blink.v
+          vvp build/sim.vvp

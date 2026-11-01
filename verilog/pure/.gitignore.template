@@ -1,0 +1,46 @@
+# ===================================
+# === Operating Systems ===
+# ===================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ===================================
+# === TODO: Add language-specific ignores ===
+# ===================================
+# Example for Python:
+# .venv/
+# __pycache__/
+# *.pyc
+
+# ===================================
+# === Secrets / Keys ===
+# ===================================
+.env
+.env.*
+*.env
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+keys/
+
+# ===================================
+# === Misc ===
+# ===================================
+*.log
+*.zip
+*.tar
+*.gz
+*.7z
+*.rar
+*.tmp
+*.swp
+*~
+.local/

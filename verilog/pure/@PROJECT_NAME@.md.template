@@ -1,0 +1,72 @@
+# @PROJECT_NAME@
+
+> This file is the single source of truth about the project.
+> `CLAUDE.md`, `QWEN.md`, `AGENTS.md` are symlinks to it.
+> Edit only `@PROJECT_NAME@.md`.
+
+---
+
+## What is this
+
+<!-- ADAPT: Describe your project in 2-3 sentences -->
+
+**Tech stack:** Verilog HDL · Quartus (Cyclone II 13.0sp1 / Cyclone V 25.1) · Icarus Verilog · Verilator · openFPGALoader · Docker build container
+
+---
+
+## Architecture
+
+<!-- ADAPT: Describe key design decisions and module boundaries -->
+
+---
+
+## Build & Test
+
+Everything runs inside the build container (via VS Code tasks / `scripts/`).
+Quartus is expected to be installed on the host under `/opt/intelFPGA` and is
+mounted into the container read-only.
+
+```bash
+# Build the container image (once):  task "Container: build image"
+#   docker build --network=host -t <project>-dev .devcontainer/
+
+# Simulate (Icarus Verilog):        task "Sim: iverilog (build + run)"
+#   iverilog -g2012 -Wall -o build/sim.vvp rtl/*.v sim/tb_blink.v && vvp build/sim.vvp
+
+# Lint (Verilator):                 task "Lint: verilator"
+#   verilator --lint-only -Wall rtl/*.v
+
+# Synthesize for the FPGA:          task "Build: Quartus compile"
+#   quartus_sh --flow compile <project>      (inside quartus/)
+
+# SOF -> SVF:                       task "Convert: SOF -> SVF"
+#   quartus_cpf -c -q 12.0MHz -g 3.3 -n p output_files/<project>.sof output_files/<project>.svf
+
+# Flash to the board:               task "FPGA: program SRAM (SVF)"
+#   openFPGALoader -c usb-blaster quartus/output_files/<project>.svf
+
+# Full build + flash:               task "Upload: build + program (full)"
+```
+
+---
+
+## Rules for AI Agents
+
+- **Don't create** new files unless necessary — prefer editing existing ones
+- **Ask** before making architectural decisions
+- **English** in code and comments
+- **Update "Project State"** after each major block of work
+- **Warn the user** when context is running low, update state before that
+
+---
+
+## Project State
+
+> Updated by the agent after each major block of work.
+> If context was lost — start here to continue.
+
+**Last commit:** —
+
+### What's implemented
+
+<!-- ADAPT: Fill in as the project grows -->

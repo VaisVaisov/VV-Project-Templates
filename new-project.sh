@@ -20,11 +20,13 @@ USAGE
 LANGUAGE FLAGS
   --c-cpp       C/C++ project (pure, hybrid, or PlatformIO embedded)
   --python      Python project (pure only)
+  --verilog     Verilog HDL / FPGA project (pure only)
 
 PROJECT TYPES
-  --pure        Standalone C/C++ or Python project
-                  C/C++:  CMake + GoogleTest + Google Benchmark + Doxygen
-                  Python: pytest + ruff + mypy + Sphinx
+  --pure        Standalone C/C++, Python or Verilog project
+                  C/C++:   CMake + GoogleTest + Google Benchmark + Doxygen
+                  Python:  pytest + ruff + mypy + Sphinx
+                  Verilog: iverilog + Verilator + Quartus + openFPGALoader (Docker build container)
   --hybrid      C/C++ + Python bridge via Cython
                   Includes everything from --pure (both C++ and Python sides)
   --platformio  Embedded firmware project (Arduino framework)
@@ -69,6 +71,7 @@ WHAT GETS CREATED
 
 EXAMPLES
   new-project --c-cpp --pure ./Projects/my-lib
+  new-project --verilog --pure ./Projects/fpga-blink
   new-project --python --pure /home/user/Projects/my-app
   new-project --c-cpp --hybrid ../../work/bridge-project
   new-project --c-cpp --platformio --esp32-devkit ./embedded/sensor-node
@@ -272,6 +275,10 @@ while [[ $# -gt 0 ]]; do
             LANG_TYPE="python"
             shift
             ;;
+        --verilog)
+            LANG_TYPE="verilog"
+            shift
+            ;;
         --pure)
             PURE=true
             shift
@@ -355,7 +362,7 @@ done
 
 # Validate language type
 if [ -z "$LANG_TYPE" ]; then
-    echo "Error: Specify --c-cpp or --python"
+    echo "Error: Specify --c-cpp, --python or --verilog"
     show_usage
 fi
 
@@ -471,6 +478,13 @@ if [ "$LANG_TYPE" = "python" ]; then
     echo "Tips for Python:"
     echo "   source .venv/bin/activate"
     echo "   pytest tests/"
+fi
+
+if [ "$LANG_TYPE" = "verilog" ]; then
+    echo "Tips for Verilog:"
+    echo "   VS Code task: Container: build image"
+    echo "   VS Code task: Sim: iverilog (build + run)"
+    echo "   VS Code task: Upload: build + program (full)"
 fi
 
 echo ""

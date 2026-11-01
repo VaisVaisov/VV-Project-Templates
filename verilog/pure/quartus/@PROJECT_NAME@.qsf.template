@@ -1,0 +1,15 @@
+# Quartus project settings.
+# Default target: Cyclone II (EP2C5T144C8). Change FAMILY/DEVICE for your board.
+set_global_assignment -name FAMILY "Cyclone II"
+set_global_assignment -name DEVICE EP2C5T144C8
+set_global_assignment -name TOP_LEVEL_ENTITY blink
+set_global_assignment -name VERILOG_FILE ../rtl/blink.v
+
+# Emit an SVF next to the SOF (used by openFPGALoader)
+set_global_assignment -name ON_CHIP_BITSTREAM_DECOMPRESSION OFF
+set_global_assignment -name GENERATE_SVF_FILE ON
+
+# Pin assignments - ADAPT to your board (example placeholders):
+# set_location_assignment PIN_23 -to clk
+# set_location_assignment PIN_25 -to rst_n
+# set_location_assignment PIN_21 -to led

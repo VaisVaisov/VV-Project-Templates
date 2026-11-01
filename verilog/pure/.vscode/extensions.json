@@ -1,0 +1,23 @@
+{
+    "recommendations": [
+        "anthropic.claude-code",
+        "Alibaba-Cloud.tongyi-lingma",
+        "saoudrizwan.claude-dev",
+        "teros-technology.teroshdl",
+        "lramseyer.vaporview",
+        "formulahendry.code-runner",
+        "yzhang.markdown-all-in-one",
+        "manuth.markdown-converter",
+        "takumii.markdowntable",
+        "redhat.vscode-yaml",
+        "meezilla.json",
+        "ms-azuretools.vscode-docker",
+        "ms-azuretools.vscode-containers",
+        "eamodio.gitlens",
+        "mhutchie.git-graph",
+        "streetsidesoftware.code-spell-checker",
+        "aaron-bond.better-comments",
+        "DavidAnson.vscode-markdownlint",
+        "GitHub.vscode-pull-request-github"
+    ]
+}

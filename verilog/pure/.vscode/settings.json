@@ -1,0 +1,19 @@
+{
+  "fpga.quartusBin": "/opt/intelFPGA/13.0sp1/quartus/bin",
+  "fpga.cable": "usb-blaster",
+  "files.associations": {
+    "*.v": "verilog",
+    "*.sv": "systemverilog",
+    "*.svh": "systemverilog",
+    "*.vh": "verilog",
+    "*.qsf": "tcl",
+    "*.qpf": "tcl",
+    "*.sdc": "tcl"
+  },
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "editor.formatOnSave": false,
+  "verilog.linting.linter": "verilator",
+  "verilog.linting.verilator.arguments": "--lint-only -Wall"
+}

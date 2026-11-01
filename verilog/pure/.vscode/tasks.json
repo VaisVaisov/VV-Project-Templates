@@ -1,0 +1,133 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "testbench",
+      "type": "promptString",
+      "description": "Testbench name (sim/tb_<name>.v)",
+      "default": "blink"
+    }
+  ],
+  "tasks": [
+    {
+      "label": "Cline YOLO",
+      "type": "shell",
+      "command": "cline --yolo",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "new", "clear": false, "focus": true }
+    },
+    {
+      "label": "Claude YOLO",
+      "type": "shell",
+      "command": "claude --dangerously-skip-permissions",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "new", "clear": false, "focus": true }
+    },
+    {
+      "label": "Qwen YOLO",
+      "type": "shell",
+      "command": "qwen --yolo",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "new", "clear": false, "focus": true }
+    },
+    {
+      "label": "Run pre-commit (all files)",
+      "type": "shell",
+      "command": "pre-commit run --all-files",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
+      "label": "Update pre-commit hooks",
+      "type": "shell",
+      "command": "pre-commit autoupdate",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
+      "label": "Container: build image",
+      "type": "shell",
+      "command": "docker build --network=host -t ${workspaceFolderBasename}-dev .devcontainer/",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
+      "label": "Build: Quartus compile",
+      "type": "shell",
+      "command": "docker run --rm --network=host --user $(id -u):$(id -g) -v ${workspaceFolder}:/workspace -v /opt/intelFPGA:/opt/intelFPGA:ro -w /workspace/quartus ${workspaceFolderBasename}-dev bash -lc 'test -d /opt/intelFPGA || { echo \"WARNING: Quartus not found in /opt/intelFPGA on the host\"; exit 1; }; ${config:fpga.quartusBin}/quartus_sh --flow compile ${workspaceFolderBasename}'",
+      "problemMatcher": [],
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
+      "label": "Sim: iverilog (build + run)",
+      "type": "shell",
+      "command": "docker run --rm --network=host --user $(id -u):$(id -g) -v ${workspaceFolder}:/workspace -w /workspace ${workspaceFolderBasename}-dev bash -lc 'mkdir -p build && iverilog -g2012 -Wall -o build/sim.vvp rtl/*.v sim/tb_${input:testbench}.v && vvp build/sim.vvp'",
+      "problemMatcher": [],
+      "group": { "kind": "test", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
+      "label": "Lint: verilator",
+      "type": "shell",
+      "command": "docker run --rm --network=host --user $(id -u):$(id -g) -v ${workspaceFolder}:/workspace -w /workspace ${workspaceFolderBasename}-dev verilator --lint-only -Wall rtl/*.v",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
+      "label": "Convert: SOF -> SVF",
+      "type": "shell",
+      "command": "docker run --rm --network=host --user $(id -u):$(id -g) -v ${workspaceFolder}:/workspace -v /opt/intelFPGA:/opt/intelFPGA:ro -w /workspace/quartus ${workspaceFolderBasename}-dev bash -lc 'test -d /opt/intelFPGA || { echo \"WARNING: Quartus not found in /opt/intelFPGA on the host\"; exit 1; }; ${config:fpga.quartusBin}/quartus_cpf -c -q 12.0MHz -g 3.3 -n p output_files/${workspaceFolderBasename}.sof output_files/${workspaceFolderBasename}.svf'",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
+      "label": "Report: resource usage",
+      "type": "shell",
+      "command": "docker run --rm --network=host --user $(id -u):$(id -g) -v ${workspaceFolder}:/workspace -w /workspace ${workspaceFolderBasename}-dev bash -lc 'cat quartus/output_files/*.fit.summary 2>/dev/null || echo \"Run Build first\"'",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
+      "label": "Clean",
+      "type": "shell",
+      "command": "rm -rf build quartus/db quartus/incremental_db quartus/output_files",
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
+      "label": "FPGA: list cables",
+      "type": "shell",
+      "command": "docker run --rm --network=host ${workspaceFolderBasename}-dev openFPGALoader --list-cables",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
+      "label": "FPGA: detect cable",
+      "type": "shell",
+      "command": "docker run --rm --network=host --privileged -v ${workspaceFolder}:/workspace -w /workspace ${workspaceFolderBasename}-dev openFPGALoader -c ${config:fpga.cable} --detect",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
+      "label": "FPGA: program SRAM (SVF)",
+      "type": "shell",
+      "command": "docker run --rm --network=host --privileged -v ${workspaceFolder}:/workspace -w /workspace ${workspaceFolderBasename}-dev openFPGALoader -c ${config:fpga.cable} quartus/output_files/${workspaceFolderBasename}.svf",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
+      "label": "Upload: build + program (full)",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Build: Quartus compile",
+        "Convert: SOF -> SVF",
+        "FPGA: program SRAM (SVF)"
+      ],
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    }
+  ]
+}
