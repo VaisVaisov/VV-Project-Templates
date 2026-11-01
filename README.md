@@ -50,6 +50,14 @@ A collection of project templates that let you start developing in minutes. Each
 | --- | --- |
 | `pure` | Python with pytest, ruff, pylint, mypy, Sphinx + ReadTheDocs |
 
+### Verilog / FPGA (`verilog/`)
+
+| Template | Description |
+| --- | --- |
+| `pure` | Verilog HDL with Icarus Verilog, Verilator, GTKWave, Quartus + openFPGALoader — every task runs inside a Docker build container |
+
+> **Note:** creating a Verilog project builds its Docker image on the spot, so it **requires network access** (the build pulls packages from the mirrors). Pass `--no-host-network` to build with the default Docker network instead of `--network=host`.
+
 ### PlatformIO Devices (`c-cpp/platformio/`)
 
 | Directory | Board | Architecture | Wokwi CI |

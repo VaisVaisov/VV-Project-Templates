@@ -1,0 +1,3 @@
+# Synopsys Design Constraints - ADAPT to your board's clock frequency.
+create_clock -name clk -period 20.000 [get_ports {clk}]
+derive_clock_uncertainty

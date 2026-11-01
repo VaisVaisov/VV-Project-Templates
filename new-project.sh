@@ -58,6 +58,8 @@ PLATFORMIO DEVICES
 OPTIONS
   --dev-container      Generate a VS Code Dev Container (.devcontainer/devcontainer.json)
   --no-dev-container   Build-only container, no VS Code Dev Container (default)
+  --host-network       Build the container image with --network=host (default)
+  --no-host-network    Build the container image with the default Docker network
   --help, -h           Show this help page and exit
 
 WHAT GETS CREATED
@@ -264,6 +266,7 @@ HYBRID=false
 PLATFORMIO=false
 DEVICE=""
 DEV_CONTAINER=false
+HOST_NETWORK=true
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -345,6 +348,14 @@ while [[ $# -gt 0 ]]; do
             ;;
         --no-dev-container)
             DEV_CONTAINER=false
+            shift
+            ;;
+        --host-network)
+            HOST_NETWORK=true
+            shift
+            ;;
+        --no-host-network)
+            HOST_NETWORK=false
             shift
             ;;
         --help|-h)
@@ -451,6 +462,19 @@ fi
 
 # Git
 init_git
+
+# Container image (Verilog template: all tasks run inside it)
+if [ "$LANG_TYPE" = "verilog" ]; then
+    if command -v docker &>/dev/null; then
+        NET_FLAG=""
+        if $HOST_NETWORK; then NET_FLAG="--network=host"; fi
+        echo "Building container image '${PROJECT_NAME}-dev' (may take a few minutes)..."
+        docker build $NET_FLAG -t "${PROJECT_NAME}-dev" .devcontainer/ || \
+            echo "Warning: image build failed - rerun later via the VS Code task 'Container: build image'."
+    else
+        echo "Warning: docker not found - build the image later via the 'Container: build image' task."
+    fi
+fi
 
 
 # ========================================

@@ -50,6 +50,14 @@
 | --- | --- |
 | `pure` | Python с pytest, ruff, pylint, mypy, Sphinx + ReadTheDocs |
 
+### Verilog / FPGA (`verilog/`)
+
+| Шаблон | Описание |
+| --- | --- |
+| `pure` | Verilog HDL с Icarus Verilog, Verilator, GTKWave, Quartus + openFPGALoader — все таски идут внутри Docker-контейнера сборки |
+
+> **Примечание:** при создании Verilog-проекта сразу собирается его Docker-образ, поэтому **нужен доступ к сети** (сборка тянет пакеты из зеркал). Флаг `--no-host-network` — собирать со стандартной сетью Docker вместо `--network=host`.
+
 ### Устройства PlatformIO (`c-cpp/platformio/`)
 
 | Директория | Плата | Архитектура | Wokwi CI |
