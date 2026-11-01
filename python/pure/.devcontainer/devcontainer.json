@@ -11,7 +11,7 @@
       "extensions": [
         "anthropic.claude-code",
         "Alibaba-Cloud.tongyi-lingma",
-        "kilocode.Kilo-Code",
+        "saoudrizwan.claude-dev",
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-python.debugpy",

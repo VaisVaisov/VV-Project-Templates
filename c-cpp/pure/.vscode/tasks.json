@@ -26,9 +26,9 @@
       }
     },
     {
-      "label": "Kilo Code",
+      "label": "Cline YOLO",
       "type": "shell",
-      "command": "kilo",
+      "command": "cline --yolo",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",

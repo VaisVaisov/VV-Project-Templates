@@ -2,7 +2,7 @@
     "recommendations": [
         "anthropic.claude-code",
         "Alibaba-Cloud.tongyi-lingma",
-        "kilocode.Kilo-Code",
+        "saoudrizwan.claude-dev",
         "ms-vscode.cpptools",
         "llvm-vs-code-extensions.vscode-clangd",
         "ms-vscode.cmake-tools",
