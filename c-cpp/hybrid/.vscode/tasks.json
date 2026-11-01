@@ -368,6 +368,19 @@
         "clear": true,
         "focus": false
       }
+    },
+    {
+      "label": "Clean",
+      "type": "shell",
+      "command": "rm -rf cmake-build-* build",
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true,
+        "focus": false
+      }
     }
   ],
   "inputs": [

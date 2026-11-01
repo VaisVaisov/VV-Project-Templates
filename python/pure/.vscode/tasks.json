@@ -137,6 +137,19 @@
         "clear": true,
         "focus": false
       }
+    },
+    {
+      "label": "Clean",
+      "type": "shell",
+      "command": "rm -rf .venv build dist *.egg-info .pytest_cache .ruff_cache .mypy_cache",
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true,
+        "focus": false
+      }
     }
   ]
 }
