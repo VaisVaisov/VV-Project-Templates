@@ -54,7 +54,9 @@ PLATFORMIO DEVICES
     --stm32f103-bluepill    STM32F103 Blue Pill (Cortex-M3, 72 MHz)
 
 OPTIONS
-  --help, -h    Show this help page and exit
+  --dev-container      Generate a VS Code Dev Container (.devcontainer/devcontainer.json)
+  --no-dev-container   Build-only container, no VS Code Dev Container (default)
+  --help, -h           Show this help page and exit
 
 WHAT GETS CREATED
   - Project files copied from the chosen template
@@ -63,6 +65,7 @@ WHAT GETS CREATED
   - GoogleTest submodule added (C/C++ pure/hybrid only)
   - Python virtual environment created via uv (hybrid/python only)
   - AI agent context symlinks: CLAUDE.md, QWEN.md, AGENTS.md
+  - Dev Container is opt-in (--dev-container); by default only the build Dockerfile is kept
 
 EXAMPLES
   new-project --c-cpp --pure ./Projects/my-lib
@@ -257,6 +260,7 @@ PURE=false
 HYBRID=false
 PLATFORMIO=false
 DEVICE=""
+DEV_CONTAINER=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -328,6 +332,14 @@ while [[ $# -gt 0 ]]; do
             DEVICE="stm32f103-bluepill"
             shift
             ;;
+        --dev-container)
+            DEV_CONTAINER=true
+            shift
+            ;;
+        --no-dev-container)
+            DEV_CONTAINER=false
+            shift
+            ;;
         --help|-h)
             show_usage 0
             ;;
@@ -397,6 +409,11 @@ cp -r "$TEMPLATE/." "$DEST/"
 if $PLATFORMIO; then
     cp -r "$TEMPLATE_BASE/platformio/devcontainers/$DEVCONTAINER/." "$DEST/.devcontainer"
     cp -r "$TEMPLATE_BASE/platformio/.vscode" "$DEST/"
+fi
+
+# Dev Container is opt-in; by default keep only the build container (Dockerfile)
+if ! $DEV_CONTAINER; then
+    rm -f "$DEST/.devcontainer/devcontainer.json"
 fi
 
 cd "$DEST" || exit 1
