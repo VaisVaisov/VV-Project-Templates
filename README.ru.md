@@ -13,7 +13,7 @@
 
 [Шаблоны](#доступные-шаблоны) • [Быстрый старт](#быстрый-старт) • [Установка](#установка) • [Dev Containers](#возможности-dev-container) • [CI/CD](#качество-кода--cicd) • [PlatformIO](#platformio-шаблоны) • [Возможности](#возможности-и-использование)
 
-**[🇬🇧 English](README.md) · [🇩🇪 Deutsch](README.de.md) · [🇫🇷 Français](README.fr.md) · [🇪🇸 Español](README.es.md) · [🇨🇳 中文](README.zh.md) · [🇯🇵 日本語](README.ja.md) · [🇵🇹 Português](README.pt.md) · [🇰🇷 한국어](README.ko.md) · [🇮🇹 Italiano](README.it.md)**
+**[🇬🇧 English](README.md)**
 
 </div>
 

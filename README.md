@@ -13,7 +13,7 @@
 
 [Templates](#available-templates) • [Quick Start](#quick-start) • [Installation](#installation) • [Dev Containers](#dev-container-features) • [CI/CD](#code-quality--cicd) • [PlatformIO](#platformio-templates) • [Features](#features--how-to-use)
 
-**[🇷🇺 Русский](README.ru.md) · [🇩🇪 Deutsch](README.de.md) · [🇫🇷 Français](README.fr.md) · [🇪🇸 Español](README.es.md) · [🇨🇳 中文](README.zh.md) · [🇯🇵 日本語](README.ja.md) · [🇵🇹 Português](README.pt.md) · [🇰🇷 한국어](README.ko.md) · [🇮🇹 Italiano](README.it.md)**
+**[🇷🇺 Русский](README.ru.md)**
 
 </div>
 
