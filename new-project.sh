@@ -493,11 +493,16 @@ mkdir -p "$DEST"
 CREATED=true
 cp -r "$TEMPLATE/." "$DEST/"
 
-# For PlatformIO, also copy family devcontainer and shared .vscode
+# For PlatformIO, also copy family devcontainer, shared .vscode and shared files
 if $PLATFORMIO; then
     cp -r "$TEMPLATE_BASE/platformio/devcontainers/$DEVCONTAINER/." "$DEST/.devcontainer"
     cp "$TEMPLATE_BASE/platformio/devcontainers/run.sh" "$DEST/.devcontainer/run.sh"
     cp -r "$TEMPLATE_BASE/platformio/.vscode" "$DEST/"
+    cp "$TEMPLATE_BASE/platformio/.editorconfig" "$DEST/"
+    cp "$TEMPLATE_BASE/platformio/.pre-commit-config.yaml" "$DEST/"
+    cp "$TEMPLATE_BASE/platformio/.gitignore.template" "$DEST/"
+    mkdir -p "$DEST/.github/workflows"
+    cp "$TEMPLATE_BASE/platformio/project-ci.yml" "$DEST/.github/workflows/ci.yml"
 fi
 
 # Dev Container is opt-in; by default keep only the build container (Dockerfile)
