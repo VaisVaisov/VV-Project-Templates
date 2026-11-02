@@ -201,7 +201,7 @@ create_agent_symlinks() {
 }
 
 init_git() {
-    git init
+    git init -b main
     echo "Initializing Git..."
     if [ "$LANG_TYPE" = "c-cpp" ] && { [ "$HYBRID" = "true" ] || [ "$PURE" = "true" ]; }; then
         git submodule add https://github.com/google/googletest.git libraries/googletest
