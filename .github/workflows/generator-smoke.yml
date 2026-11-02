@@ -17,6 +17,11 @@ jobs:
 
       - uses: actions/checkout@v6
 
+      - name: Configure git identity
+        run: |
+          git config --global user.name "VVPT CI"
+          git config --global user.email "ci@example.com"
+
       - name: Stub docker and uv
         run: |
           mkdir -p /tmp/stubs
