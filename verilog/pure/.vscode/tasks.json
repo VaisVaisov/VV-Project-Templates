@@ -76,7 +76,7 @@
     {
       "label": "Build: SOF -> SVF",
       "type": "shell",
-      "command": "bash .devcontainer/run.sh --quartus \"cd quartus && test -d /opt/intelFPGA || { echo 'WARNING: Quartus not found in /opt/intelFPGA on the host'; exit 1; }; ${config:fpga.quartusBin}/quartus_cpf -c -q 12.0MHz -g 3.3 -n p output_files/${workspaceFolderBasename}.sof output_files/${workspaceFolderBasename}.svf\"",
+      "command": "bash .devcontainer/run.sh --quartus \"cd quartus && test -d /opt/intelFPGA || { echo 'WARNING: Quartus not found in /opt/intelFPGA on the host'; exit 1; }; ${config:fpga.quartusBin}/quartus_cpf -c -q ${config:fpga.svfClock} -g ${config:fpga.svfVoltage} -n p output_files/${workspaceFolderBasename}.sof output_files/${workspaceFolderBasename}.svf\"",
       "problemMatcher": [],
       "group": "build",
       "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }

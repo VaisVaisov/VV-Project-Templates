@@ -1,6 +1,8 @@
 {
   "fpga.quartusBin": "/opt/intelFPGA/13.0sp1/quartus/bin",
   "fpga.cable": "usb-blaster",
+  "fpga.svfClock": "12.0MHz",
+  "fpga.svfVoltage": "3.3",
   "files.associations": {
     "*.v": "verilog",
     "*.sv": "systemverilog",
