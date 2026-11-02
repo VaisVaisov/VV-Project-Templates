@@ -1,13 +1,13 @@
-# IT Project Templates
+# VV Project Templates
 
 <div align="center">
 
 ![License](https://img.shields.io/badge/license-MIT-E91E63?style=for-the-badge&labelColor=0D1117)
-![Stars](https://img.shields.io/github/stars/VaisVaisov/IT-Project-Templates?style=for-the-badge&labelColor=0D1117&color=E91E63&logo=github&logoColor=white)
-![Last Commit](https://img.shields.io/github/last-commit/VaisVaisov/IT-Project-Templates?style=for-the-badge&labelColor=0D1117&color=00BCD4&logo=git&logoColor=white)
+![Stars](https://img.shields.io/github/stars/VaisVaisov/VV-Project-Templates?style=for-the-badge&labelColor=0D1117&color=E91E63&logo=github&logoColor=white)
+![Last Commit](https://img.shields.io/github/last-commit/VaisVaisov/VV-Project-Templates?style=for-the-badge&labelColor=0D1117&color=00BCD4&logo=git&logoColor=white)
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-00BCD4?style=for-the-badge&labelColor=0D1117)
 
-**Ready-to-use project templates with VS Code Dev Containers**
+**Ready-to-use project templates with Docker build containers**
 
 *Arch Linux · Clang toolchain · AI coding agents pre-installed*
 
@@ -85,10 +85,10 @@ A collection of project templates that let you start developing in minutes. Each
 
 ```bash
 # Clone anywhere you like
-git clone https://github.com/VaisVaisov/IT-Project-Templates.git ~/IT-Project-Templates
+git clone https://github.com/VaisVaisov/VV-Project-Templates.git ~/VV-Project-Templates
 
 # Create a symlink in ~/.local/bin
-ln -s ~/IT-Project-Templates/new-project.sh ~/.local/bin/new-project
+ln -s ~/VV-Project-Templates/new-project.sh ~/.local/bin/new-project
 
 # Create a new project
 new-project --c-cpp --pure ~/Projects/my_cpp_app
@@ -103,10 +103,10 @@ On Windows, the entire ecosystem runs through WSL2. Install WSL2 and use the sam
 
 ```bash
 # Clone into WSL2 home
-git clone https://github.com/VaisVaisov/IT-Project-Templates.git ~/IT-Project-Templates
+git clone https://github.com/VaisVaisov/VV-Project-Templates.git ~/VV-Project-Templates
 
 # Create a symlink in ~/.local/bin (in WSL2)
-ln -s ~/IT-Project-Templates/new-project.sh ~/.local/bin/new-project
+ln -s ~/VV-Project-Templates/new-project.sh ~/.local/bin/new-project
 
 # Create a new project (from WSL2)
 new-project --c-cpp --pure ~/Projects/my_cpp_app
@@ -174,13 +174,13 @@ Options:
 
 ```bash
 # Linux / macOS / Windows (WSL2)
-git clone https://github.com/VaisVaisov/IT-Project-Templates.git ~/IT-Project-Templates
+git clone https://github.com/VaisVaisov/VV-Project-Templates.git ~/VV-Project-Templates
 ```
 
 ### 2. Create a symlink
 
 ```bash
-ln -s ~/IT-Project-Templates/new-project.sh ~/.local/bin/new-project
+ln -s ~/VV-Project-Templates/new-project.sh ~/.local/bin/new-project
 ```
 
 > **Note:** `new-project.sh` is already executable after cloning. If not: `chmod +x new-project.sh`
@@ -204,9 +204,11 @@ ln -s ~/IT-Project-Templates/new-project.sh ~/.local/bin/new-project
 ## Project Structure
 
 ```
-IT-Project-Templates/
+VV-Project-Templates/
+├── .devcontainer/              # Container for working on the templates themselves
 ├── .github/
 │   └── dependabot.yml          # Automated dependency updates (Actions + pre-commit)
+├── .vscode/                    # Tasks for the template repository
 ├── c-cpp/
 │   ├── pure/                   # Pure C/C++ template
 │   │   ├── .devcontainer/      # Clang + CMake + Ninja + GDB + lcov + valgrind

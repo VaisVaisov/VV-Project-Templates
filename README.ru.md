@@ -1,13 +1,13 @@
-# IT Project Templates
+# VV Project Templates
 
 <div align="center">
 
 ![License](https://img.shields.io/badge/license-MIT-E91E63?style=for-the-badge&labelColor=0D1117)
-![Stars](https://img.shields.io/github/stars/VaisVaisov/IT-Project-Templates?style=for-the-badge&labelColor=0D1117&color=E91E63&logo=github&logoColor=white)
-![Last Commit](https://img.shields.io/github/last-commit/VaisVaisov/IT-Project-Templates?style=for-the-badge&labelColor=0D1117&color=00BCD4&logo=git&logoColor=white)
+![Stars](https://img.shields.io/github/stars/VaisVaisov/VV-Project-Templates?style=for-the-badge&labelColor=0D1117&color=E91E63&logo=github&logoColor=white)
+![Last Commit](https://img.shields.io/github/last-commit/VaisVaisov/VV-Project-Templates?style=for-the-badge&labelColor=0D1117&color=00BCD4&logo=git&logoColor=white)
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-00BCD4?style=for-the-badge&labelColor=0D1117)
 
-**Готовые шаблоны проектов с поддержкой VS Code Dev Containers**
+**Готовые шаблоны проектов с Docker-контейнерами для сборки**
 
 *Arch Linux · Clang toolchain · AI-агенты предустановлены*
 
@@ -85,10 +85,10 @@
 
 ```bash
 # Клонировать в любое место
-git clone https://github.com/VaisVaisov/IT-Project-Templates.git ~/IT-Project-Templates
+git clone https://github.com/VaisVaisov/VV-Project-Templates.git ~/VV-Project-Templates
 
 # Создать симлинк в ~/.local/bin (один раз)
-ln -s ~/IT-Project-Templates/new-project.sh ~/.local/bin/new-project
+ln -s ~/VV-Project-Templates/new-project.sh ~/.local/bin/new-project
 
 # Создать новый проект
 new-project --c-cpp --pure ~/Projects/my_cpp_app
@@ -103,10 +103,10 @@ new-project --c-cpp --platformio --esp32-devkit ~/Projects/sensor_node
 
 ```bash
 # Клонировать в WSL2 home
-git clone https://github.com/VaisVaisov/IT-Project-Templates.git ~/IT-Project-Templates
+git clone https://github.com/VaisVaisov/VV-Project-Templates.git ~/VV-Project-Templates
 
 # Создать симлинк в ~/.local/bin (в WSL2)
-ln -s ~/IT-Project-Templates/new-project.sh ~/.local/bin/new-project
+ln -s ~/VV-Project-Templates/new-project.sh ~/.local/bin/new-project
 
 # Создать новый проект (из WSL2)
 new-project --c-cpp --pure ~/Projects/my_cpp_app
@@ -174,13 +174,13 @@ new-project [--help] <язык> <тип> [устройство] <путь>
 
 ```bash
 # Linux / macOS / Windows (WSL2)
-git clone https://github.com/VaisVaisov/IT-Project-Templates.git ~/IT-Project-Templates
+git clone https://github.com/VaisVaisov/VV-Project-Templates.git ~/VV-Project-Templates
 ```
 
 ### 2. Создать симлинк
 
 ```bash
-ln -s ~/IT-Project-Templates/new-project.sh ~/.local/bin/new-project
+ln -s ~/VV-Project-Templates/new-project.sh ~/.local/bin/new-project
 ```
 
 > **Примечание:** `new-project.sh` уже исполняемый после клонирования. Если нет: `chmod +x new-project.sh`
@@ -204,9 +204,11 @@ ln -s ~/IT-Project-Templates/new-project.sh ~/.local/bin/new-project
 ## Структура репозитория
 
 ```
-IT-Project-Templates/
+VV-Project-Templates/
+├── .devcontainer/              # Контейнер для работы над самими шаблонами
 ├── .github/
 │   └── dependabot.yml          # Автообновление зависимостей (Actions + pre-commit)
+├── .vscode/                    # Таски для репозитория шаблонов
 ├── c-cpp/
 │   ├── pure/                   # Чистый C/C++ шаблон
 │   │   ├── .devcontainer/      # Clang + CMake + Ninja + GDB + lcov + valgrind

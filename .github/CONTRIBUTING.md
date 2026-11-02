@@ -1,4 +1,4 @@
-# Contributing to IT-Project-Templates
+# Contributing to VV-Project-Templates
 
 Thank you for your interest in contributing! This document explains the process for contributing to this repository.
 
