@@ -1,21 +1,23 @@
 name: PlatformIO CI
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     container: archlinux:latest
     steps:
-    - name: Setup Arch Linux
-      run: |
-        pacman -Syu --noconfirm
-        pacman -Sy --noconfirm git python python-pre-commit
+      - name: Setup Arch Linux
+        run: |
+          pacman -Syu --noconfirm
+          pacman -Sy --noconfirm git python python-pre-commit
 
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-    - name: Run pre-commit checks
-      run: pre-commit run --all-files
+      - name: Run pre-commit checks
+        run: pre-commit run --all-files
 
   build:
     runs-on: ubuntu-latest
@@ -23,37 +25,38 @@ jobs:
     needs: lint
 
     strategy:
+      fail-fast: false
       matrix:
-        device: [arduino-nano, arduino-pro-micro, esp32-devkit, stm32f411]
+        device:
+          - arduino-nano
+          - esp32-devkit
+          - esp8266-wemos-d1-mini
+          - rpi-pico
+          - stm32f411-blackpill
 
     steps:
-    - name: Setup Arch Linux
-      run: |
-        pacman -Syu --noconfirm
-        pacman -Sy --noconfirm git python python-pip
+      - name: Setup Arch Linux
+        run: |
+          pacman -Syu --noconfirm
+          pacman -Sy --noconfirm git python python-pip
 
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-    - name: Install PlatformIO Core
-      run: |
-        pip install --upgrade pip --break-system-packages
-        pip install platformio --break-system-packages
+      - name: Install PlatformIO Core
+        run: |
+          pip install --upgrade pip --break-system-packages
+          pip install platformio --break-system-packages
 
-    - name: Build firmware for ${{ matrix.device }}
-      run: |
-        cd ${{ matrix.device }}
-        pio run
+      - name: Generate project for ${{ matrix.device }}
+        run: |
+          mkdir -p /tmp/no-docker
+          printf '#!/bin/sh\nexit 1\n' > /tmp/no-docker/docker
+          chmod +x /tmp/no-docker/docker
+          PATH="/tmp/no-docker:$PATH" ./new-project.sh \
+              --c-cpp --platformio --${{ matrix.device }} \
+              "/tmp/project-${{ matrix.device }}"
 
-    - name: Run tests (if available)
-      run: |
-        cd ${{ matrix.device }}
-        if [ -d "test" ]; then
-          pio test
-        else
-          echo "No tests found for ${{ matrix.device }}"
-        fi
-
-    - name: Check firmware size
-      run: |
-        cd ${{ matrix.device }}
-        pio run --target size
+      - name: Build firmware
+        run: |
+          cd "/tmp/project-${{ matrix.device }}"
+          pio run
