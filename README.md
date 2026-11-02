@@ -26,7 +26,7 @@ A collection of project templates that let you start developing in minutes. Each
 ### Why use this?
 
 - 🚀 **Zero setup**: open in VS Code, click "Reopen in Container" — start coding immediately
-- 🤖 **AI-ready**: Claude Code, Qwen Code and Cline pre-installed in every container
+- 🤖 **AI-ready**: Claude Code, Qwen Code and DSH (dsh-tui) pre-installed in every container
 - 🔒 **Quality gates**: pre-commit hooks catch issues before they reach the repository
 - ⚙️ **CI/CD included**: GitHub Actions for linting, building, testing, coverage, docs and releases
 - 📝 **Conventional Commits**: commitlint enforces commit message format
@@ -261,7 +261,7 @@ Every container is built on **Arch Linux (latest)** and includes:
 - **Shell**: Zsh with Oh My Zsh + Powerlevel10k
 - **Editor**: Neovim
 - **VCS**: Git, git-delta, GitHub CLI
-- **AI agents**: Claude Code, Qwen Code, Cline CLI (from AUR) — all available as CLI tools
+- **AI agents**: Claude Code, Qwen Code (AUR) and DSH + dsh-tui (npm) — all available as CLI tools
 - **Docker**: Docker + Docker Buildx + Lazydocker (for running containers inside containers)
 - **GitHub auth**: `~/.config/gh` mounted from the host — no re-authentication needed
 
@@ -325,7 +325,7 @@ All templates auto-install extensions when opening in a Dev Container and show t
 | --- | --- | --- |
 | **AI** | Claude Code | AI agent (CLI + VS Code) |
 | | TONGYI Lingma | AI assistant and code completion |
-| | Cline | AI agent supporting 400+ models |
+| | DeepSeek Harness | AI agent (DSH runtime + VS Code client) |
 | **Git** | GitLens | Advanced Git features (blame, history) |
 | | Git Graph | Visual commit graph |
 | **Code Quality** | Better Comments | Colorful TODO/FIXME/NOTE comments |
@@ -432,7 +432,7 @@ Updates are checked weekly — no manual version tracking needed.
 
 ### AI Agent Context
 
-Every generated project includes a `@PROJECT_NAME@.md` file — a single source of truth describing the project architecture, tech stack, build instructions, and rules for AI agents. `CLAUDE.md`, `QWEN.md`, and `AGENTS.md` are symlinks pointing to this file, so Claude Code, Qwen Code, and Cline all read the same context automatically.
+Every generated project includes a `@PROJECT_NAME@.md` file — a single source of truth describing the project architecture, tech stack, build instructions, and rules for AI agents. `CLAUDE.md`, `QWEN.md`, and `AGENTS.md` are symlinks pointing to this file, so Claude Code, Qwen Code, and DSH all read the same context automatically.
 
 ---
 

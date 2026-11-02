@@ -26,7 +26,7 @@
 ### Зачем это нужно?
 
 - 🚀 **Никакой настройки**: открой в VS Code, нажми "Reopen in Container" — и сразу кодить
-- 🤖 **AI-готовность**: Claude Code, Qwen Code и Cline предустановлены в каждом контейнере
+- 🤖 **AI-готовность**: Claude Code, Qwen Code и DSH (dsh-tui) предустановлены в каждом контейнере
 - 🔒 **Контроль качества**: pre-commit хуки ловят проблемы до попадания в репозиторий
 - ⚙️ **CI/CD из коробки**: GitHub Actions для линтинга, сборки, тестов, покрытия, документации и релизов
 - 📝 **Conventional Commits**: commitlint проверяет формат сообщений коммитов
@@ -261,7 +261,7 @@ IT-Project-Templates/
 - **Оболочка**: Zsh с Oh My Zsh + Powerlevel10k
 - **Редактор**: Neovim
 - **VCS**: Git, git-delta, GitHub CLI
-- **AI-агенты**: Claude Code, Qwen Code, Cline CLI (из AUR) — все доступны как CLI-инструменты
+- **AI-агенты**: Claude Code, Qwen Code (AUR) и DSH + dsh-tui (npm) — все доступны как CLI-инструменты
 - **Docker**: Docker + Docker Buildx + Lazydocker (для запуска контейнеров внутри контейнеров)
 - **GitHub auth**: `~/.config/gh` монтируется с хоста — повторная авторизация не нужна
 
@@ -325,7 +325,7 @@ IT-Project-Templates/
 | --- | --- | --- |
 | **AI** | Claude Code | AI-агент (CLI + VS Code) |
 | | TONGYI Lingma | AI-ассистент и автодополнение |
-| | Cline | AI-агент с поддержкой 400+ моделей |
+| | DeepSeek Harness | AI-агент (DSH-рантайм + клиент VS Code) |
 | **Git** | GitLens | Расширенные возможности Git (blame, история) |
 | | Git Graph | Визуальный граф коммитов |
 | **Качество кода** | Better Comments | Цветные TODO/FIXME/NOTE комментарии |
@@ -432,7 +432,7 @@ IT-Project-Templates/
 
 ### AI-контекст для агентов
 
-Каждый сгенерированный проект содержит файл `@PROJECT_NAME@.md` — единый источник правды с описанием архитектуры, стека технологий, инструкций по сборке и правил для AI-агентов. `CLAUDE.md`, `QWEN.md` и `AGENTS.md` являются симлинками на этот файл, поэтому Claude Code, Qwen Code и Cline автоматически читают один и тот же контекст.
+Каждый сгенерированный проект содержит файл `@PROJECT_NAME@.md` — единый источник правды с описанием архитектуры, стека технологий, инструкций по сборке и правил для AI-агентов. `CLAUDE.md`, `QWEN.md` и `AGENTS.md` являются симлинками на этот файл, поэтому Claude Code, Qwen Code и DSH автоматически читают один и тот же контекст.
 
 ---
 

@@ -26,9 +26,9 @@
       }
     },
     {
-      "label": "Cline YOLO",
+      "label": "DSH YOLO",
       "type": "shell",
-      "command": "cline --yolo",
+      "command": "DSH_PERMISSION_MODE=danger-full-access dsh @DSH_TUI_PROFILE@",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",

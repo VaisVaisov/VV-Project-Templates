@@ -78,8 +78,35 @@ RUN git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin && \
     cd /tmp/yay-bin && makepkg -si --noconfirm && \
     rm -rf /tmp/yay-bin
 
-# Install Claude Code, Qwen Code and Cline from AUR
-RUN yay -S --noconfirm claude-code qwen-code-bin cline-cli
+# Install Claude Code and Qwen Code from AUR
+RUN yay -S --noconfirm claude-code qwen-code-bin
+
+# DSH (DeepSeek Harness) plus the TUI plugin the project was created with.
+# Both versions are baked in by new-project.sh; an incompatible pair may be
+# accepted here, since it can only affect this container.
+ARG DSH_VERSION=@DSH_VERSION@
+ARG DSH_TUI_PACKAGE=@DSH_TUI_PACKAGE@
+ARG DSH_TUI_VERSION=@DSH_TUI_VERSION@
+ARG DSH_TUI_PROFILE=@DSH_TUI_PROFILE@
+ARG DSH_ACCEPT_RISK=true
+
+RUN set -eu; \
+    npm install -g \
+        --allow-scripts=pnpm,@deepseek-ai/dsh-subprocess-local,koffi,node-pty,@google/genai,protobufjs \
+        pnpm "@deepseek-ai/dsh@${DSH_VERSION}"; \
+    exact="$(npm view "${DSH_TUI_PACKAGE}@${DSH_TUI_VERSION}" version 2>/dev/null || true)"; \
+    [ -n "$exact" ] || exact="${DSH_TUI_VERSION}"; \
+    if ! dsh plugin --profile "${DSH_TUI_PROFILE}" add "${DSH_TUI_PACKAGE}@${exact}"; then \
+        if [ "${DSH_ACCEPT_RISK}" = "true" ]; then \
+            echo "WARNING: accepting an incompatible DSH/plugin version pair"; \
+            dsh plugin --profile "${DSH_TUI_PROFILE}" allow-version "${DSH_TUI_PACKAGE}@${exact}" \
+                --dsh-version "$(dsh --version)" --accept-risk; \
+            dsh plugin --profile "${DSH_TUI_PROFILE}" add "${DSH_TUI_PACKAGE}@${exact}"; \
+        else \
+            echo "ERROR: plugin version is incompatible; rebuild with --build-arg DSH_ACCEPT_RISK=true"; \
+            exit 1; \
+        fi; \
+    fi
 
 
 # Install oh-my-zsh

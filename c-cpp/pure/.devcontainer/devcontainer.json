@@ -11,7 +11,7 @@
       "extensions": [
         "anthropic.claude-code",
         "Alibaba-Cloud.tongyi-lingma",
-        "saoudrizwan.claude-dev",
+        "HarcoChen.dsh-vsc-integration",
         "ms-vscode.cpptools",
         "llvm-vs-code-extensions.vscode-clangd",
         "ms-vscode.cmake-tools",
@@ -54,7 +54,8 @@
   "mounts": [
     "source=${localWorkspaceFolderBasename}-bashhistory,target=/commandhistory,type=volume",
     "source=${localWorkspaceFolderBasename}-claude-config,target=/home/vscode/.claude,type=volume",
-    "source=${localEnv:HOME}/.config/gh,target=/home/vscode/.config/gh,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/.config/gh,target=/home/vscode/.config/gh,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.dsh/.credentials.yaml,target=/home/vscode/.dsh/.credentials.yaml,type=bind,consistency=cached"
   ],
   "containerEnv": {
     "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",

@@ -228,6 +228,76 @@ check_deps() {
     fi
 }
 
+# Detect the DSH runtime and the TUI plugin the user actually runs, so the
+# generated container image gets the same pair instead of a hardcoded default.
+detect_dsh() {
+    DSH_VERSION="latest"
+    DSH_TUI_PACKAGE="@deepseek-harness-tui/dsh-tui"
+    DSH_TUI_VERSION="latest"
+    DSH_TUI_PROFILE="tui"
+
+    if command -v dsh &>/dev/null; then
+        DSH_VERSION="$(dsh --version 2>/dev/null | tr -d '[:space:]' || true)"
+        [ -n "$DSH_VERSION" ] || DSH_VERSION="latest"
+    fi
+
+    local pkgfile profile match chosen=""
+
+    for pkgfile in "$HOME"/.dsh/profiles/*/package.json; do
+        [ -f "$pkgfile" ] || continue
+        profile="$(basename "$(dirname "$pkgfile")")"
+        match="$(node -e '
+            const fs = require("fs");
+            const pkg = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+            const deps = { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) };
+            for (const [name, range] of Object.entries(deps)) {
+                if (/tui/i.test(name)) {
+                    process.stdout.write(name + "\t" + range);
+                    break;
+                }
+            }
+        ' "$pkgfile" 2>/dev/null || true)"
+
+        [ -n "$match" ] || continue
+
+        if [ "$profile" = "tui" ]; then
+            chosen="$match"
+            DSH_TUI_PROFILE="$profile"
+            break
+        fi
+        if [ -z "$chosen" ]; then
+            chosen="$match"
+            DSH_TUI_PROFILE="$profile"
+        fi
+    done
+
+    if [ -n "$chosen" ]; then
+        DSH_TUI_PACKAGE="${chosen%%$'\t'*}"
+        DSH_TUI_VERSION="${chosen#*$'\t'}"
+    else
+        echo "Warning: no DSH TUI plugin found in ~/.dsh/profiles."
+        echo "         Falling back to ${DSH_TUI_PACKAGE}@${DSH_TUI_VERSION} (profile: ${DSH_TUI_PROFILE})."
+    fi
+
+    echo "DSH: runtime ${DSH_VERSION}, TUI ${DSH_TUI_PACKAGE}@${DSH_TUI_VERSION} (profile: ${DSH_TUI_PROFILE})"
+}
+
+# Bake the detected DSH pair into the copied Dockerfile and VS Code tasks.
+replace_dsh_placeholders() {
+    if [ -f .devcontainer/Dockerfile ]; then
+        sed -i \
+            -e "s|@DSH_VERSION@|${DSH_VERSION}|g" \
+            -e "s|@DSH_TUI_PACKAGE@|${DSH_TUI_PACKAGE}|g" \
+            -e "s|@DSH_TUI_VERSION@|${DSH_TUI_VERSION}|g" \
+            -e "s|@DSH_TUI_PROFILE@|${DSH_TUI_PROFILE}|g" \
+            .devcontainer/Dockerfile
+    fi
+
+    if [ -f .vscode/tasks.json ]; then
+        sed -i "s|@DSH_TUI_PROFILE@|${DSH_TUI_PROFILE}|g" .vscode/tasks.json
+    fi
+}
+
 cleanup() {
     local exit_code=$?
     if [ "$CREATED" = true ] && [ -d "$DEST" ]; then
@@ -436,6 +506,10 @@ if ! $DEV_CONTAINER; then
 fi
 
 cd "$DEST" || exit 1
+
+# Detect the user's DSH runtime/TUI and bake them into the copied files
+detect_dsh
+replace_dsh_placeholders
 
 # Replace placeholders
 replace_placeholders "$PROJECT_NAME"

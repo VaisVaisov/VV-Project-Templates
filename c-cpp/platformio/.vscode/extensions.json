@@ -2,7 +2,7 @@
     "recommendations": [
         "anthropic.claude-code",
         "Alibaba-Cloud.tongyi-lingma",
-        "saoudrizwan.claude-dev",
+        "HarcoChen.dsh-vsc-integration",
         "platformio.platformio-ide",
         "ms-vscode.cpptools",
         "wokwi.wokwi-vscode",

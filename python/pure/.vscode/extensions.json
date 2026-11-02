@@ -2,7 +2,7 @@
     "recommendations": [
         "anthropic.claude-code",
         "Alibaba-Cloud.tongyi-lingma",
-        "saoudrizwan.claude-dev",
+        "HarcoChen.dsh-vsc-integration",
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-python.debugpy",
