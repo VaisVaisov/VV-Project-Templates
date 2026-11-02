@@ -23,27 +23,12 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "github-actions"
-    directory: "/c-cpp/platformio/arduino-nano"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "github-actions"
-    directory: "/c-cpp/platformio/arduino-pro-micro"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "github-actions"
-    directory: "/c-cpp/platformio/esp32-devkit"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "github-actions"
-    directory: "/c-cpp/platformio/stm32f411"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "github-actions"
     directory: "/meta-template"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "github-actions"
+    directory: "/verilog/pure"
     schedule:
       interval: "weekly"
 
@@ -70,26 +55,11 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "pre-commit"
-    directory: "/c-cpp/platformio/arduino-nano"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "pre-commit"
-    directory: "/c-cpp/platformio/arduino-pro-micro"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "pre-commit"
-    directory: "/c-cpp/platformio/esp32-devkit"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "pre-commit"
-    directory: "/c-cpp/platformio/stm32f411"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "pre-commit"
     directory: "/meta-template"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "pre-commit"
+    directory: "/verilog/pure"
     schedule:
       interval: "weekly"
