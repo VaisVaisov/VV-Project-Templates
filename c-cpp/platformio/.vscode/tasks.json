@@ -100,7 +100,7 @@
     {
       "label": "PlatformIO: Build",
       "type": "shell",
-      "command": "pio run",
+      "command": "bash .devcontainer/run.sh \"pio run\"",
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -114,9 +114,35 @@
       }
     },
     {
+      "label": "PlatformIO: Rebuild",
+      "type": "shell",
+      "command": "bash .devcontainer/run.sh \"pio run --target clean && pio run\"",
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true,
+        "focus": false
+      }
+    },
+    {
+      "label": "PlatformIO: Build (verbose)",
+      "type": "shell",
+      "command": "bash .devcontainer/run.sh \"pio run -v\"",
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true,
+        "focus": false
+      }
+    },
+    {
       "label": "PlatformIO: Upload",
       "type": "shell",
-      "command": "pio run --target upload",
+      "command": "bash .devcontainer/run.sh --privileged \"pio run --target upload\"",
       "problemMatcher": [],
       "group": "build",
       "presentation": {
@@ -129,7 +155,7 @@
     {
       "label": "PlatformIO: Upload + Monitor",
       "type": "shell",
-      "command": "pio run --target upload && pio device monitor",
+      "command": "bash .devcontainer/run.sh --privileged --tty \"pio run --target upload && pio device monitor\"",
       "problemMatcher": [],
       "group": "build",
       "presentation": {
@@ -142,7 +168,7 @@
     {
       "label": "PlatformIO: Monitor",
       "type": "shell",
-      "command": "pio device monitor",
+      "command": "bash .devcontainer/run.sh --privileged --tty \"pio device monitor\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -154,7 +180,7 @@
     {
       "label": "PlatformIO: Clean",
       "type": "shell",
-      "command": "pio run --target clean",
+      "command": "bash .devcontainer/run.sh \"pio run --target clean\"",
       "problemMatcher": [],
       "group": "build",
       "presentation": {
@@ -167,7 +193,7 @@
     {
       "label": "PlatformIO: Check size",
       "type": "shell",
-      "command": "pio run --target size",
+      "command": "bash .devcontainer/run.sh \"pio run --target size\"",
       "problemMatcher": [],
       "group": "build",
       "presentation": {
@@ -180,7 +206,7 @@
     {
       "label": "PlatformIO: Static analysis",
       "type": "shell",
-      "command": "pio check",
+      "command": "bash .devcontainer/run.sh \"pio check\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -192,7 +218,7 @@
     {
       "label": "PlatformIO: Debug",
       "type": "shell",
-      "command": "pio debug",
+      "command": "bash .devcontainer/run.sh --privileged --tty \"pio debug\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -204,7 +230,7 @@
     {
       "label": "PlatformIO: List devices",
       "type": "shell",
-      "command": "pio device list",
+      "command": "bash .devcontainer/run.sh --privileged \"pio device list\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -216,7 +242,7 @@
     {
       "label": "PlatformIO: Update libraries",
       "type": "shell",
-      "command": "pio pkg update",
+      "command": "bash .devcontainer/run.sh \"pio pkg update\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -228,7 +254,7 @@
     {
       "label": "Run tests (PlatformIO)",
       "type": "shell",
-      "command": "pio test",
+      "command": "bash .devcontainer/run.sh \"pio test\"",
       "problemMatcher": [],
       "group": {
         "kind": "test",

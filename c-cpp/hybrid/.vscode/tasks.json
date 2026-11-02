@@ -100,7 +100,7 @@
     {
       "label": "CMake: Build Debug (Linux)",
       "type": "shell",
-      "command": "cmake --preset linux-debug && cmake --build --preset linux-debug",
+      "command": "bash .devcontainer/run.sh \"cmake --preset linux-debug && cmake --build --preset linux-debug\"",
       "problemMatcher": ["$gcc"],
       "group": {
         "kind": "build",
@@ -116,7 +116,7 @@
     {
       "label": "CMake: Build Release (Linux)",
       "type": "shell",
-      "command": "cmake --preset linux-release && cmake --build --preset linux-release",
+      "command": "bash .devcontainer/run.sh \"cmake --preset linux-release && cmake --build --preset linux-release\"",
       "problemMatcher": ["$gcc"],
       "group": "build",
       "presentation": {
@@ -129,7 +129,7 @@
     {
       "label": "CMake: Build Windows (.exe)",
       "type": "shell",
-      "command": "cmake --preset windows-cross && cmake --build --preset windows-cross",
+      "command": "bash .devcontainer/run.sh \"cmake --preset windows-cross && cmake --build --preset windows-cross\"",
       "problemMatcher": ["$gcc"],
       "group": "build",
       "presentation": {
@@ -142,7 +142,7 @@
     {
       "label": "Run tests (C++)",
       "type": "shell",
-      "command": "cd cmake-build-linux-debug && ctest --output-on-failure",
+      "command": "bash .devcontainer/run.sh \"cd cmake-build-linux-debug && ctest --output-on-failure\"",
       "problemMatcher": [],
       "group": {
         "kind": "test",
@@ -156,9 +156,21 @@
       }
     },
     {
+      "label": "Python: sync dependencies",
+      "type": "shell",
+      "command": "bash .devcontainer/run.sh \"uv sync --extra dev\"",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true,
+        "focus": false
+      }
+    },
+    {
       "label": "Run tests (Python)",
       "type": "shell",
-      "command": "python -m pytest -v",
+      "command": "bash .devcontainer/run.sh \"uv sync --extra dev && uv run --no-sync python -m pytest -v\"",
       "problemMatcher": [],
       "group": "test",
       "presentation": {
@@ -171,7 +183,7 @@
     {
       "label": "Sanitize: ASan",
       "type": "shell",
-      "command": "cmake --preset linux-asan && cmake --build --preset linux-asan && cd cmake-build-linux-asan && ctest --output-on-failure",
+      "command": "bash .devcontainer/run.sh \"cmake --preset linux-asan && cmake --build --preset linux-asan && cd cmake-build-linux-asan && ctest --output-on-failure\"",
       "problemMatcher": ["$gcc"],
       "group": "test",
       "presentation": {
@@ -184,7 +196,7 @@
     {
       "label": "Sanitize: UBSan",
       "type": "shell",
-      "command": "cmake --preset linux-ubsan && cmake --build --preset linux-ubsan && cd cmake-build-linux-ubsan && ctest --output-on-failure",
+      "command": "bash .devcontainer/run.sh \"cmake --preset linux-ubsan && cmake --build --preset linux-ubsan && cd cmake-build-linux-ubsan && ctest --output-on-failure\"",
       "problemMatcher": ["$gcc"],
       "group": "test",
       "presentation": {
@@ -197,7 +209,7 @@
     {
       "label": "Sanitize: TSan",
       "type": "shell",
-      "command": "cmake --preset linux-tsan && cmake --build --preset linux-tsan && cd cmake-build-linux-tsan && ctest --output-on-failure",
+      "command": "bash .devcontainer/run.sh \"cmake --preset linux-tsan && cmake --build --preset linux-tsan && cd cmake-build-linux-tsan && ctest --output-on-failure\"",
       "problemMatcher": ["$gcc"],
       "group": "test",
       "presentation": {
@@ -210,7 +222,7 @@
     {
       "label": "Sanitize: MSan",
       "type": "shell",
-      "command": "cmake --preset linux-msan && cmake --build --preset linux-msan && cd cmake-build-linux-msan && ctest --output-on-failure",
+      "command": "bash .devcontainer/run.sh \"cmake --preset linux-msan && cmake --build --preset linux-msan && cd cmake-build-linux-msan && ctest --output-on-failure\"",
       "problemMatcher": ["$gcc"],
       "group": "test",
       "presentation": {
@@ -223,7 +235,7 @@
     {
       "label": "Coverage: C++",
       "type": "shell",
-      "command": "cmake --preset linux-coverage && cmake --build --preset linux-coverage && cd cmake-build-linux-coverage && ctest --output-on-failure && lcov --capture --directory . --output-file coverage.info && lcov --remove coverage.info '/usr/*' '*/libraries/*' '*/test/*' --output-file coverage.info && genhtml coverage.info --output-directory coverage-html",
+      "command": "bash .devcontainer/run.sh \"cmake --preset linux-coverage && cmake --build --preset linux-coverage && cd cmake-build-linux-coverage && ctest --output-on-failure && lcov --capture --directory . --output-file coverage.info && lcov --remove coverage.info '/usr/*' '*/libraries/*' '*/test/*' --output-file coverage.info && genhtml coverage.info --output-directory coverage-html\"",
       "problemMatcher": ["$gcc"],
       "group": "test",
       "presentation": {
@@ -236,7 +248,7 @@
     {
       "label": "Coverage: Python",
       "type": "shell",
-      "command": "python -m pytest --cov --cov-report=term --cov-report=html",
+      "command": "bash .devcontainer/run.sh \"uv sync --extra dev && uv run --no-sync python -m pytest --cov --cov-report=term --cov-report=html\"",
       "problemMatcher": [],
       "group": "test",
       "presentation": {
@@ -249,7 +261,7 @@
     {
       "label": "Memcheck: all tests (ctest)",
       "type": "shell",
-      "command": "tools/profiler/run-memcheck.sh",
+      "command": "bash .devcontainer/run.sh \"tools/profiler/run-memcheck.sh\"",
       "problemMatcher": [],
       "group": "test",
       "presentation": {
@@ -262,7 +274,7 @@
     {
       "label": "Memcheck: specific binary",
       "type": "shell",
-      "command": "tools/profiler/run-memcheck.sh ${input:binaryName}",
+      "command": "bash .devcontainer/run.sh \"tools/profiler/run-memcheck.sh ${input:binaryName}\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -274,7 +286,7 @@
     {
       "label": "Profile: callgrind",
       "type": "shell",
-      "command": "tools/profiler/run-callgrind.sh ${input:binaryName}",
+      "command": "bash .devcontainer/run.sh \"tools/profiler/run-callgrind.sh ${input:binaryName}\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -286,7 +298,7 @@
     {
       "label": "Profile: cachegrind",
       "type": "shell",
-      "command": "tools/profiler/run-cachegrind.sh ${input:binaryName}",
+      "command": "bash .devcontainer/run.sh \"tools/profiler/run-cachegrind.sh ${input:binaryName}\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -298,7 +310,7 @@
     {
       "label": "Profile: massif",
       "type": "shell",
-      "command": "tools/profiler/run-massif.sh ${input:binaryName}",
+      "command": "bash .devcontainer/run.sh \"tools/profiler/run-massif.sh ${input:binaryName}\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -310,7 +322,7 @@
     {
       "label": "Helgrind: all tests (ctest)",
       "type": "shell",
-      "command": "tools/profiler/run-helgrind.sh",
+      "command": "bash .devcontainer/run.sh \"tools/profiler/run-helgrind.sh\"",
       "problemMatcher": [],
       "group": "test",
       "presentation": {
@@ -323,7 +335,7 @@
     {
       "label": "Helgrind: specific binary",
       "type": "shell",
-      "command": "tools/profiler/run-helgrind.sh ${input:binaryName}",
+      "command": "bash .devcontainer/run.sh \"tools/profiler/run-helgrind.sh ${input:binaryName}\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -335,7 +347,7 @@
     {
       "label": "DRD: all tests (ctest)",
       "type": "shell",
-      "command": "tools/profiler/run-drd.sh",
+      "command": "bash .devcontainer/run.sh \"tools/profiler/run-drd.sh\"",
       "problemMatcher": [],
       "group": "test",
       "presentation": {
@@ -348,7 +360,7 @@
     {
       "label": "DRD: specific binary",
       "type": "shell",
-      "command": "tools/profiler/run-drd.sh ${input:binaryName}",
+      "command": "bash .devcontainer/run.sh \"tools/profiler/run-drd.sh ${input:binaryName}\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -360,7 +372,7 @@
     {
       "label": "Profile: Python cProfile",
       "type": "shell",
-      "command": "tools/profiler/profile-python.sh",
+      "command": "bash .devcontainer/run.sh \"uv sync --extra dev && uv run --no-sync bash tools/profiler/profile-python.sh\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -372,7 +384,7 @@
     {
       "label": "Profile: Python memory",
       "type": "shell",
-      "command": "tools/profiler/profile-memory.sh",
+      "command": "bash .devcontainer/run.sh \"uv sync --extra dev && uv run --no-sync bash tools/profiler/profile-memory.sh\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -384,7 +396,7 @@
     {
       "label": "Profile: Python py-spy",
       "type": "shell",
-      "command": "tools/profiler/profile-spy.sh",
+      "command": "bash .devcontainer/run.sh \"uv sync --extra dev && uv run --no-sync bash tools/profiler/profile-spy.sh\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -396,7 +408,7 @@
     {
       "label": "Profile: Run all",
       "type": "shell",
-      "command": "scripts/profile.sh ${input:binaryName}",
+      "command": "bash .devcontainer/run.sh \"uv sync --extra dev && uv run --no-sync bash scripts/profile.sh ${input:binaryName}\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",

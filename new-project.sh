@@ -426,6 +426,7 @@ cp -r "$TEMPLATE/." "$DEST/"
 # For PlatformIO, also copy family devcontainer and shared .vscode
 if $PLATFORMIO; then
     cp -r "$TEMPLATE_BASE/platformio/devcontainers/$DEVCONTAINER/." "$DEST/.devcontainer"
+    cp "$TEMPLATE_BASE/platformio/devcontainers/run.sh" "$DEST/.devcontainer/run.sh"
     cp -r "$TEMPLATE_BASE/platformio/.vscode" "$DEST/"
 fi
 
