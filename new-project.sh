@@ -20,7 +20,7 @@ USAGE
 LANGUAGE FLAGS
   --c-cpp       C/C++ project (pure, hybrid, or PlatformIO embedded)
   --python      Python project (pure only)
-  --verilog     Verilog HDL / FPGA project (pure only, build-only container)
+  --verilog     Verilog HDL / FPGA project (pure only)
 
 PROJECT TYPES
   --pure        Standalone C/C++, Python or Verilog project
@@ -515,13 +515,6 @@ if [ ! -d "$TEMPLATE" ]; then
     echo "Error: Template not found: $TEMPLATE"
     echo "Check folder: $TEMPLATES_DIR"
     exit 1
-fi
-
-# Verilog ships a build-only container; there is no devcontainer.json for it
-if $DEV_CONTAINER && [ "$LANG_TYPE" = "verilog" ]; then
-    echo "Error: --dev-container is not supported for --verilog."
-    echo "Verilog projects always use the build-only container."
-    show_usage
 fi
 
 # Create project

@@ -45,13 +45,9 @@ jobs:
         run: |
           PATH="/tmp/stubs:$PATH" ./new-project.sh --verilog --pure /tmp/t-v
 
-      - name: Verilog must reject --dev-container
+      - name: Scaffold Verilog with a Dev Container
         run: |
-          if PATH="/tmp/stubs:$PATH" ./new-project.sh --verilog --pure --dev-container /tmp/t-v-dc
-          then
-            echo "ERROR: --verilog --dev-container should fail"
-            exit 1
-          fi
+          PATH="/tmp/stubs:$PATH" ./new-project.sh --verilog --pure --dev-container /tmp/t-v-dc
 
       - name: Verify scaffolding
         run: |
@@ -76,4 +72,6 @@ jobs:
           test -f /tmp/t-pio/.github/workflows/ci.yml
           test -f /tmp/t-v/rtl/blink.v
           test -f /tmp/t-v/quartus/t-v.qpf
-          test ! -e /tmp/t-v-dc
+          test ! -f /tmp/t-v/.devcontainer/devcontainer.json
+          test -f /tmp/t-v-dc/.devcontainer/devcontainer.json
+          test -f /tmp/t-v-dc/.devcontainer/Dockerfile
