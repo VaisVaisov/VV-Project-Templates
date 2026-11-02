@@ -138,9 +138,10 @@ new-project [--help] <язык> <тип> [устройство] <путь>
 Язык:
   --c-cpp            C/C++ проект
   --python           Python проект
+  --verilog          Verilog / FPGA проект
 
 Тип:
-  --pure             Чистый C/C++ или Python
+  --pure             Чистый C/C++, Python или Verilog проект
   --hybrid           Гибридный C/C++ + Python/Cython  (только --c-cpp)
   --platformio       Встраиваемые системы             (только --c-cpp)
 
@@ -163,7 +164,11 @@ new-project [--help] <язык> <тип> [устройство] <путь>
   --stm32f103-bluepill    STM32F103 Blue Pill (Cortex-M3, 72 MHz)
 
 Опции:
-  --help, -h         Показать эту справку и выйти
+  --dev-container      Сгенерировать Dev Container (.devcontainer/devcontainer.json)
+  --no-dev-container   Только контейнер сборки, без Dev Container (по умолчанию)
+  --host-network       Собирать образ с --network=host (по умолчанию)
+  --no-host-network    Собирать образ со стандартной сетью Docker
+  --help, -h           Показать эту справку и выйти
 ```
 
 ---
@@ -191,8 +196,8 @@ ln -s ~/VV-Project-Templates/new-project.sh ~/.local/bin/new-project
 | --- | --- | --- |
 | **Docker** | Обязательно — [docker.com](https://www.docker.com/) | Обязательно — [Docker Desktop](https://www.docker.com/products/docker-desktop/) |
 | **WSL2** | — | Обязательно — [Руководство по установке WSL2](https://learn.microsoft.com/ru-ru/windows/wsl/install) + расширение **WSL** в VS Code |
-| **VS Code** | Обязательно — [code.visualstudio.com](https://code.visualstudio.com/) | Обязательно |
-| **Dev Containers extension** | Обязательно — установить из VS Code | Обязательно (открывать проект из WSL2) |
+| **VS Code** | Опционально (рекомендуется) — [code.visualstudio.com](https://code.visualstudio.com/) | Опционально |
+| **Dev Containers extension** | Опционально — только с `--dev-container` | Опционально |
 | **GitHub CLI** | Рекомендуется | Рекомендуется (для Windows — в WSL2) |
 | **uv** | Для hybrid/python шаблонов — [astral.sh/uv](https://astral.sh/uv) | Для hybrid/python шаблонов — устанавливать в WSL2 |
 | **Git** | Обязательно | Обязательно — устанавливать в WSL2 |
@@ -248,6 +253,14 @@ VV-Project-Templates/
 │       ├── .vscode/
 │       ├── tools/profiler/     # Python профилировщики
 │       └── ...
+├── verilog/
+│   └── pure/                   # Verilog/FPGA шаблон (Quartus, Icarus, Verilator, GTKWave)
+│       ├── .devcontainer/      # Quartus + FOSS FPGA-тулчейн
+│       ├── .github/
+│       │   └── workflows/      # ci.yml
+│       ├── rtl/                # Исходники RTL
+│       ├── sim/                # Тестбенчи
+│       └── quartus/            # Файлы проекта Quartus
 ├── meta-template/              # Основа для создания новых шаблонов
 ├── new-project.sh              # Скрипт для Linux / macOS / Windows (WSL2)
 ├── LICENSE
@@ -395,7 +408,7 @@ VV-Project-Templates/
 
 ### GitHub Actions
 
-Каждый шаблон включает два воркфлоу: `ci.yml` (запускается на каждый push/PR) и `release.yml` (запускается на тег `v*`).
+Шаблоны C/C++ и Python включают `ci.yml` (каждый push/PR) и `release.yml` (на тег `v*`). У Verilog только `ci.yml`; у PlatformIO-шаблонов своего воркфлоу нет — их собирает общий воркфлоу репозитория.
 
 #### C/C++ Pure & Hybrid
 - **Lint**: pre-commit проверки (clang-format, clang-tidy, cppcheck, commitlint)

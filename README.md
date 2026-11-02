@@ -138,9 +138,10 @@ new-project [--help] <language> <type> [device] <path>
 Language:
   --c-cpp            C/C++ project
   --python           Python project
+  --verilog          Verilog / FPGA project
 
 Type:
-  --pure             Pure C/C++ or Python
+  --pure             Pure C/C++, Python or Verilog project
   --hybrid           Hybrid C/C++ + Python/Cython  (--c-cpp only)
   --platformio       Embedded development           (--c-cpp only)
 
@@ -163,7 +164,11 @@ PlatformIO devices (other):
   --stm32f103-bluepill    STM32F103 Blue Pill (Cortex-M3, 72 MHz)
 
 Options:
-  --help, -h         Show this help and exit
+  --dev-container      Generate a Dev Container (.devcontainer/devcontainer.json)
+  --no-dev-container   Build-only container, no Dev Container (default)
+  --host-network       Build the image with --network=host (default)
+  --no-host-network    Build the image with the default Docker network
+  --help, -h           Show this help and exit
 ```
 
 ---
@@ -191,8 +196,8 @@ ln -s ~/VV-Project-Templates/new-project.sh ~/.local/bin/new-project
 | --- | --- | --- |
 | **Docker** | Required — [docker.com](https://www.docker.com/) | Required — [Docker Desktop](https://www.docker.com/products/docker-desktop/) |
 | **WSL2** | — | Required — [WSL2 install guide](https://learn.microsoft.com/en-us/windows/wsl/install) + **WSL** extension in VS Code |
-| **VS Code** | Required — [code.visualstudio.com](https://code.visualstudio.com/) | Required |
-| **Dev Containers extension** | Required — install from VS Code | Required (open project from WSL2) |
+| **VS Code** | Optional (recommended) — [code.visualstudio.com](https://code.visualstudio.com/) | Optional |
+| **Dev Containers extension** | Optional — only with `--dev-container` | Optional |
 | **GitHub CLI** | Recommended | Recommended (for Windows — in WSL2) |
 | **uv** | For hybrid/python templates — [astral.sh/uv](https://astral.sh/uv) | For hybrid/python templates — install in WSL2 |
 | **Git** | Required | Required — install in WSL2 |
@@ -248,6 +253,14 @@ VV-Project-Templates/
 │       ├── .vscode/
 │       ├── tools/profiler/     # Python profilers
 │       └── ...
+├── verilog/
+│   └── pure/                   # Verilog/FPGA template (Quartus, Icarus, Verilator, GTKWave)
+│       ├── .devcontainer/      # Quartus + FOSS FPGA toolchain
+│       ├── .github/
+│       │   └── workflows/      # ci.yml
+│       ├── rtl/                # RTL sources
+│       ├── sim/                # Testbenches
+│       └── quartus/            # Quartus project files
 ├── meta-template/              # Base for creating new templates
 ├── new-project.sh              # Script for Linux / macOS / Windows (WSL2)
 ├── LICENSE
@@ -395,7 +408,7 @@ Hooks run automatically before each commit. Both regular hooks and the commit-ms
 
 ### GitHub Actions
 
-Each template includes two workflows: `ci.yml` (runs on every push/PR) and `release.yml` (runs on `v*` tags).
+The C/C++ and Python templates ship `ci.yml` (every push/PR) and `release.yml` (on `v*` tags). The Verilog template ships only `ci.yml`; PlatformIO templates ship no per-project workflow — the repository-level one builds them all.
 
 #### C/C++ Pure & Hybrid
 - **Lint**: pre-commit checks (clang-format, clang-tidy, cppcheck, commitlint)
