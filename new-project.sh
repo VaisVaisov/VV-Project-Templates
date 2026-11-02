@@ -209,13 +209,6 @@ configure_git_identity() {
     email="$(git config --global user.email 2>/dev/null || true)"
 
     if [ -z "$name" ] || [ -z "$email" ]; then
-        if [ ! -t 0 ]; then
-            SKIP_COMMIT=true
-            echo "Warning: git identity is not configured and there is no terminal to ask."
-            echo "         Set 'git config --global user.name/user.email' and commit manually."
-            return
-        fi
-
         echo "Git identity is not configured."
         if [ -z "$name" ]; then
             printf "  user.name: "
