@@ -24,25 +24,35 @@
 
 Everything runs inside the build container (via VS Code tasks / `scripts/`).
 Quartus is expected to be installed on the host under `/opt/intelFPGA` and is
-mounted into the container read-only.
+mounted into the container read-only. The version is selected by
+`fpga.quartusBin` in `.vscode/settings.json` (default `13.0sp1`, switch to
+`25.1` when needed).
 
 ```bash
 # Build the container image (once):  task "Container: build image"
 #   docker build --network=host -t <project>-dev .devcontainer/
 
-# Simulate (Icarus Verilog):        task "Sim: iverilog (build + run)"
+# Simulate (Icarus Verilog):        task "Run tests: simulation (iverilog)"
 #   iverilog -g2012 -Wall -o build/sim.vvp rtl/*.v sim/tb_blink.v && vvp build/sim.vvp
 
-# Lint (Verilator):                 task "Lint: verilator"
+# Simulate (Quartus, VWF stimulus): tasks "Sim: Quartus functional (VWF)"
+#                                   and "Sim: Quartus timing (VWF)"
+#   create quartus/<project>.vwf first: Quartus GUI -> File -> New -> Vector Waveform File
+
+# Edit pins:                        task "Pins: Pin Planner (GUI)"
+#   opens the Quartus GUI on the project (Tools -> Pin Planner)
+
+# Lint (Verilator):                 task "Static analysis: verilator"
 #   verilator --lint-only -Wall rtl/*.v
 
 # Synthesize for the FPGA:          task "Build: Quartus compile"
 #   quartus_sh --flow compile <project>      (inside quartus/)
 
-# SOF -> SVF:                       task "Convert: SOF -> SVF"
-#   quartus_cpf -c -q 12.0MHz -g 3.3 -n p output_files/<project>.sof output_files/<project>.svf
+# SOF -> SVF:                       task "Build: SOF -> SVF"
+#   quartus_cpf -c -q <svfClock> -g <svfVoltage> -n p output_files/<project>.sof output_files/<project>.svf
+#   (both values come from .vscode/settings.json)
 
-# Flash to the board:               task "FPGA: program SRAM (SVF)"
+# Flash to the board:               task "Upload: program SRAM (SVF)"
 #   openFPGALoader -c usb-blaster quartus/output_files/<project>.svf
 
 # Full build + flash:               task "Upload: build + program (full)"

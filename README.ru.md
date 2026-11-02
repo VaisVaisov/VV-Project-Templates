@@ -54,7 +54,7 @@
 
 | Шаблон | Описание |
 | --- | --- |
-| `pure` | Verilog HDL с Icarus Verilog, Verilator, GTKWave, Quartus + openFPGALoader — все таски идут внутри Docker-контейнера сборки |
+| `pure` | Verilog HDL с Icarus Verilog, Verilator, GTKWave, симулятором Quartus (VWF), Pin Planner и openFPGALoader — все таски идут внутри Docker-контейнера сборки |
 
 > **Примечание:** при создании Verilog-проекта сразу собирается его Docker-образ, поэтому **нужен доступ к сети** (сборка тянет пакеты из зеркал). Флаг `--no-host-network` — собирать со стандартной сетью Docker вместо `--network=host`. Флаг `--dev-container` оставляет `devcontainer.json` и даёт полноценный Dev Container с примонтированными Quartus и X11.
 

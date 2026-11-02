@@ -54,7 +54,7 @@ A collection of project templates that let you start developing in minutes. Each
 
 | Template | Description |
 | --- | --- |
-| `pure` | Verilog HDL with Icarus Verilog, Verilator, GTKWave, Quartus + openFPGALoader — every task runs inside a Docker build container |
+| `pure` | Verilog HDL with Icarus Verilog, Verilator, GTKWave, Quartus simulator (VWF), Pin Planner and openFPGALoader — every task runs inside a Docker build container |
 
 > **Note:** creating a Verilog project builds its Docker image on the spot, so it **requires network access** (the build pulls packages from the mirrors). Pass `--no-host-network` to build with the default Docker network instead of `--network=host`. Pass `--dev-container` to keep `devcontainer.json` and work inside a full Dev Container with Quartus and X11 mounted.
 
