@@ -3,12 +3,15 @@
 # Setup: pre-commit install
 
 repos:
-  # TODO: Add language-specific hooks here
-  # Example for Python:
-  # - repo: https://github.com/psf/black
-  #   rev: 23.12.1
-  #   hooks:
-  #     - id: black
+  # Verilog lint (requires verilator on PATH)
+  - repo: local
+    hooks:
+      - id: verilator-lint
+        name: verilator lint
+        entry: bash -c 'verilator --lint-only -Wall rtl/*.v'
+        language: system
+        files: ^rtl/.*\.(v|sv)$
+        pass_filenames: false
 
   # General checks (keep for all templates)
   - repo: https://github.com/pre-commit/pre-commit-hooks
