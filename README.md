@@ -60,20 +60,20 @@ A collection of project templates that let you start developing in minutes. Each
 
 ### PlatformIO Devices (`c-cpp/platformio/`)
 
-| Directory | Board | Architecture | Wokwi CI |
+| Device flag | Board | Architecture | Wokwi CI |
 | --- | --- | --- | --- |
-| `arduino-nano` | Arduino Nano | ATmega328P (AVR) | ✓ |
-| `arduino-pro-micro` | Arduino Pro Micro | ATmega32U4 (AVR, USB HID) | ✓ |
-| `esp32-devkit` | ESP32 DevKit V1 | Xtensa LX6, WiFi + BT | ✓ |
-| `esp32-s2-saola` | ESP32-S2 Saola | Xtensa LX7, USB OTG | ✓ |
-| `esp32-s3-devkitc` | ESP32-S3 DevKitC | Xtensa LX7, AI+IoT | ✓ |
-| `esp32-c3-devkitm` | ESP32-C3 DevKitM | RISC-V, WiFi + BT | ✓ |
-| `esp32-c6-devkitc` | ESP32-C6 DevKitC | RISC-V, WiFi 6 + Zigbee | ✓ |
-| `esp32-h2-devkitm` | ESP32-H2 DevKitM | RISC-V, Zigbee + Thread | ✓ |
-| `esp8266-wemos-d1-mini` | Wemos D1 Mini | ESP8266, WiFi | — |
-| `rpi-pico` | Raspberry Pi Pico | RP2040, ARM Cortex-M0+ | ✓ |
-| `stm32f411-blackpill` | STM32F411 Black Pill | Cortex-M4, 100 MHz | ✓ * |
-| `stm32f103-bluepill` | STM32F103 Blue Pill | Cortex-M3, 72 MHz | ✓ |
+| `--arduino-nano` | Arduino Nano | ATmega328P (AVR) | ✓ |
+| `--arduino-pro-micro` | Arduino Pro Micro | ATmega32U4 (AVR, USB HID) | ✓ |
+| `--esp32-devkit` | ESP32 DevKit V1 | Xtensa LX6, WiFi + BT | ✓ |
+| `--esp32-s2-saola` | ESP32-S2 Saola | Xtensa LX7, USB OTG | ✓ |
+| `--esp32-s3-devkitc` | ESP32-S3 DevKitC | Xtensa LX7, AI+IoT | ✓ |
+| `--esp32-c3-devkitm` | ESP32-C3 DevKitM | RISC-V, WiFi + BT | ✓ |
+| `--esp32-c6-devkitc` | ESP32-C6 DevKitC | RISC-V, WiFi 6 + Zigbee | ✓ |
+| `--esp32-h2-devkitm` | ESP32-H2 DevKitM | RISC-V, Zigbee + Thread | ✓ |
+| `--esp8266-wemos-d1-mini` | Wemos D1 Mini | ESP8266, WiFi | — |
+| `--rpi-pico` | Raspberry Pi Pico | RP2040, ARM Cortex-M0+ | ✓ |
+| `--stm32f411-blackpill` | STM32F411 Black Pill | Cortex-M4, 100 MHz | ✓ * |
+| `--stm32f103-bluepill` | STM32F103 Blue Pill | Cortex-M3, 72 MHz | ✓ |
 
 > \* STM32F411: Wokwi uses `board-st-nucleo-f411re` (same MCU, different pinout) — see [PlatformIO](#platformio-templates) section. ESP8266: Wokwi not supported — build only.
 
@@ -442,20 +442,20 @@ Every generated project includes a `@PROJECT_NAME@.md` file — a single source 
 
 ### Supported Boards
 
-| Directory | Board | Architecture | Wokwi CI |
+| Device flag | Board | Architecture | Wokwi CI |
 | --- | --- | --- | --- |
-| `arduino-nano` | Arduino Nano | ATmega328P (AVR) | ✓ |
-| `arduino-pro-micro` | Arduino Pro Micro | ATmega32U4 (AVR, USB HID) | ✓ |
-| `esp32-devkit` | ESP32 DevKit V1 | Xtensa LX6, WiFi + BT | ✓ |
-| `esp32-s2-saola` | ESP32-S2 Saola | Xtensa LX7, USB OTG | ✓ |
-| `esp32-s3-devkitc` | ESP32-S3 DevKitC | Xtensa LX7, AI+IoT | ✓ |
-| `esp32-c3-devkitm` | ESP32-C3 DevKitM | RISC-V, WiFi + BT | ✓ |
-| `esp32-c6-devkitc` | ESP32-C6 DevKitC | RISC-V, WiFi 6 + Zigbee | ✓ |
-| `esp32-h2-devkitm` | ESP32-H2 DevKitM | RISC-V, Zigbee + Thread | ✓ |
-| `esp8266-wemos-d1-mini` | Wemos D1 Mini | ESP8266, WiFi | — |
-| `rpi-pico` | Raspberry Pi Pico | RP2040, ARM Cortex-M0+ | ✓ |
-| `stm32f411-blackpill` | STM32F411 Black Pill | Cortex-M4, 100 MHz | ✓ * |
-| `stm32f103-bluepill` | STM32F103 Blue Pill | Cortex-M3, 72 MHz | ✓ |
+| `--arduino-nano` | Arduino Nano | ATmega328P (AVR) | ✓ |
+| `--arduino-pro-micro` | Arduino Pro Micro | ATmega32U4 (AVR, USB HID) | ✓ |
+| `--esp32-devkit` | ESP32 DevKit V1 | Xtensa LX6, WiFi + BT | ✓ |
+| `--esp32-s2-saola` | ESP32-S2 Saola | Xtensa LX7, USB OTG | ✓ |
+| `--esp32-s3-devkitc` | ESP32-S3 DevKitC | Xtensa LX7, AI+IoT | ✓ |
+| `--esp32-c3-devkitm` | ESP32-C3 DevKitM | RISC-V, WiFi + BT | ✓ |
+| `--esp32-c6-devkitc` | ESP32-C6 DevKitC | RISC-V, WiFi 6 + Zigbee | ✓ |
+| `--esp32-h2-devkitm` | ESP32-H2 DevKitM | RISC-V, Zigbee + Thread | ✓ |
+| `--esp8266-wemos-d1-mini` | Wemos D1 Mini | ESP8266, WiFi | — |
+| `--rpi-pico` | Raspberry Pi Pico | RP2040, ARM Cortex-M0+ | ✓ |
+| `--stm32f411-blackpill` | STM32F411 Black Pill | Cortex-M4, 100 MHz | ✓ * |
+| `--stm32f103-bluepill` | STM32F103 Blue Pill | Cortex-M3, 72 MHz | ✓ |
 
 > \* STM32F411: Wokwi does not support BlackPill directly — `diagram.json` uses `board-st-nucleo-f411re` (same STM32F411 MCU, different pinout). ESP8266: Wokwi not supported — build only.
 
