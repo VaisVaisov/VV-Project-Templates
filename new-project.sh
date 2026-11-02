@@ -58,6 +58,8 @@ PLATFORMIO DEVICES
 OPTIONS
   --dev-container      Generate a VS Code Dev Container (.devcontainer/devcontainer.json)
   --no-dev-container   Build-only container, no VS Code Dev Container (default)
+  --no-vscode          Remove VS Code specifics (.vscode/, customizations.vscode)
+  --no-container       No Docker at all: drop .devcontainer/ and run tasks on the host
   --host-network       Build the container image with --network=host (default)
   --no-host-network    Build the container image with the default Docker network
   --help, -h           Show this help page and exit
@@ -71,6 +73,7 @@ WHAT GETS CREATED
   - Python virtual environment created via uv (hybrid/python only)
   - AI agent context symlinks: CLAUDE.md, QWEN.md, AGENTS.md
   - Dev Container is opt-in (--dev-container); by default only the build Dockerfile is kept
+  - With --no-container the toolchain must be installed on the host
 
 EXAMPLES
   new-project --c-cpp --pure ./Projects/my-lib
@@ -332,6 +335,85 @@ replace_dsh_placeholders() {
     fi
 }
 
+require_python() {
+    if ! command -v python3 &>/dev/null; then
+        echo "Error: python3 is required for this flag."
+        exit 1
+    fi
+}
+
+# Rewrite container-wrapped tasks into plain host commands and drop the
+# Container:* helpers (used by --no-container).
+unwrap_container_tasks() {
+    local tasks_file="$1"
+    [ -f "$tasks_file" ] || return 0
+    require_python
+
+    python3 - "$tasks_file" <<'PY'
+import json
+import sys
+
+path = sys.argv[1]
+with open(path, encoding="utf-8") as handle:
+    data = json.load(handle)
+
+prefix = "bash .devcontainer/run.sh"
+container_tasks = {
+    "Container: build image",
+    "Container: rebuild image",
+    "Container: shell",
+}
+
+result = []
+for task in data.get("tasks", []):
+    if task.get("label") in container_tasks:
+        continue
+
+    command = task.get("command")
+    if isinstance(command, str) and command.startswith(prefix):
+        rest = command[len(prefix):].strip()
+        while rest.startswith("--"):
+            parts = rest.split(None, 1)
+            rest = parts[1] if len(parts) > 1 else ""
+        if len(rest) >= 2 and rest.startswith('"') and rest.endswith('"'):
+            rest = rest[1:-1]
+        task["command"] = rest
+
+    result.append(task)
+
+data["tasks"] = result
+with open(path, "w", encoding="utf-8") as handle:
+    json.dump(data, handle, indent=2, ensure_ascii=False)
+    handle.write("\n")
+PY
+}
+
+# Drop the VS Code customizations from devcontainer.json (used by --no-vscode).
+strip_vscode_customization() {
+    local config_file="$1"
+    [ -f "$config_file" ] || return 0
+    require_python
+
+    python3 - "$config_file" <<'PY'
+import json
+import sys
+
+path = sys.argv[1]
+with open(path, encoding="utf-8") as handle:
+    data = json.load(handle)
+
+customizations = data.get("customizations")
+if isinstance(customizations, dict):
+    customizations.pop("vscode", None)
+    if not customizations:
+        data.pop("customizations", None)
+
+with open(path, "w", encoding="utf-8") as handle:
+    json.dump(data, handle, indent=2, ensure_ascii=False)
+    handle.write("\n")
+PY
+}
+
 cleanup() {
     local exit_code=$?
     if [ "$CREATED" = true ] && [ -d "$DEST" ]; then
@@ -371,6 +453,8 @@ PLATFORMIO=false
 DEVICE=""
 DEV_CONTAINER=false
 HOST_NETWORK=true
+NO_VSCODE=false
+NO_CONTAINER=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -462,6 +546,14 @@ while [[ $# -gt 0 ]]; do
             HOST_NETWORK=false
             shift
             ;;
+        --no-vscode)
+            NO_VSCODE=true
+            shift
+            ;;
+        --no-container)
+            NO_CONTAINER=true
+            shift
+            ;;
         --help|-h)
             show_usage 0
             ;;
@@ -478,6 +570,11 @@ done
 # Validate language type
 if [ -z "$LANG_TYPE" ]; then
     echo "Error: Specify --c-cpp, --python or --verilog"
+    show_usage
+fi
+
+if $NO_CONTAINER && $DEV_CONTAINER; then
+    echo "Error: --no-container cannot be combined with --dev-container."
     show_usage
 fi
 
@@ -542,6 +639,20 @@ fi
 # Dev Container is opt-in; by default keep only the build container (Dockerfile)
 if ! $DEV_CONTAINER; then
     rm -f "$DEST/.devcontainer/devcontainer.json"
+fi
+
+# No Docker at all: drop the container and run every task on the host
+if $NO_CONTAINER; then
+    rm -rf "$DEST/.devcontainer"
+    if ! $NO_VSCODE; then
+        unwrap_container_tasks "$DEST/.vscode/tasks.json"
+    fi
+fi
+
+# No VS Code specifics: drop .vscode/ and the vscode customizations
+if $NO_VSCODE; then
+    rm -rf "$DEST/.vscode"
+    strip_vscode_customization "$DEST/.devcontainer/devcontainer.json"
 fi
 
 cd "$DEST" || exit 1
