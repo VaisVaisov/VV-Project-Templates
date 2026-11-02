@@ -82,6 +82,13 @@
       "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
     },
     {
+      "label": "Pins: Pin Planner (GUI)",
+      "type": "shell",
+      "command": "bash .devcontainer/run.sh --quartus --gui \"cd quartus && test -d /opt/intelFPGA || { echo 'WARNING: Quartus not found in /opt/intelFPGA on the host'; exit 1; }; ${config:fpga.quartusBin}/quartus ${workspaceFolderBasename}.qpf\"",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
       "label": "Upload: program SRAM (SVF)",
       "type": "shell",
       "command": "bash .devcontainer/run.sh --privileged \"openFPGALoader -c ${config:fpga.cable} quartus/output_files/${workspaceFolderBasename}.svf\"",
