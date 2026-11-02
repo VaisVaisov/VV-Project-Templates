@@ -117,10 +117,16 @@ new-project --c-cpp --platformio --esp32-devkit ~/Projects/sensor_node
 
 ### После создания проекта
 
-1. Открой папку проекта в VS Code
-2. Нажми **"Reopen in Container"** (или `Ctrl+Shift+P` → "Dev Containers: Reopen in Container")
-3. При первом запуске контейнер соберётся автоматически
-4. Pre-commit хуки установятся сами — можно приступать!
+По умолчанию проект создаётся в режиме **build-only**: образ `<project>-dev`
+собирается сразу, а `.devcontainer/devcontainer.json` не создаётся. Дальше —
+таски VS Code:
+
+- **Container: build image** — (пере)собрать `<project>-dev`
+- **Container: rebuild image** — пересобрать без кэша слоёв
+- **Container: shell** — зайти в контейнер
+
+С флагом `--dev-container` остаётся `devcontainer.json`, и проект открывается
+через "Reopen in Container".
 
 ---
 

@@ -463,16 +463,20 @@ fi
 # Git
 init_git
 
-# Container image (Verilog template: all tasks run inside it)
-if [ "$LANG_TYPE" = "verilog" ]; then
+# Container image: build it at creation unless a Dev Container was requested
+# (a Dev Container builds its own image when it opens).
+if ! $DEV_CONTAINER && [ -f .devcontainer/Dockerfile ]; then
     if command -v docker &>/dev/null; then
         NET_FLAG=""
         if $HOST_NETWORK; then NET_FLAG="--network=host"; fi
         echo "Building container image '${PROJECT_NAME}-dev' (may take a few minutes)..."
-        docker build $NET_FLAG -t "${PROJECT_NAME}-dev" .devcontainer/ || \
-            echo "Warning: image build failed - rerun later via the VS Code task 'Container: build image'."
+        if ! docker build $NET_FLAG -t "${PROJECT_NAME}-dev" .devcontainer/; then
+            echo "Warning: image build failed."
+            echo "The project was created, but nothing can be built until the image exists."
+            echo "Rebuild it with the VS Code task 'Container: build image'."
+        fi
     else
-        echo "Warning: docker not found - build the image later via the 'Container: build image' task."
+        echo "Warning: docker not found - build the image later via the VS Code task 'Container: build image'."
     fi
 fi
 

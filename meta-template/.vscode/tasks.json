@@ -62,6 +62,42 @@
       }
     },
     {
+      "label": "Container: build image",
+      "type": "shell",
+      "command": "docker build --network=host -t ${workspaceFolderBasename}-dev .devcontainer/",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true,
+        "focus": false
+      }
+    },
+    {
+      "label": "Container: rebuild image",
+      "type": "shell",
+      "command": "docker build --network=host --no-cache -t ${workspaceFolderBasename}-dev .devcontainer/",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true,
+        "focus": false
+      }
+    },
+    {
+      "label": "Container: shell",
+      "type": "shell",
+      "command": "docker run --rm -it --network=host --user $(id -u):$(id -g) -v ${workspaceFolder}:/workspace -w /workspace ${workspaceFolderBasename}-dev zsh",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "clear": false,
+        "focus": true
+      }
+    },
+    {
       "label": "Clean",
       "type": "shell",
       "command": "rm -rf build",
