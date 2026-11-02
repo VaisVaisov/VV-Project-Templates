@@ -66,6 +66,7 @@ WHAT GETS CREATED
   - Project files copied from the chosen template
   - Placeholders replaced with your project name
   - Git repository initialized with initial commit
+  - Git identity is taken from the global config, or asked once if missing
   - GoogleTest submodule added (C/C++ pure/hybrid only)
   - Python virtual environment created via uv (hybrid/python only)
   - AI agent context symlinks: CLAUDE.md, QWEN.md, AGENTS.md
@@ -200,9 +201,45 @@ create_agent_symlinks() {
     ln -sf "${project_name}.md" AGENTS.md
 }
 
+configure_git_identity() {
+    SKIP_COMMIT=false
+
+    local name email
+    name="$(git config --global user.name 2>/dev/null || true)"
+    email="$(git config --global user.email 2>/dev/null || true)"
+
+    if [ -z "$name" ] || [ -z "$email" ]; then
+        if [ ! -t 0 ]; then
+            SKIP_COMMIT=true
+            echo "Warning: git identity is not configured and there is no terminal to ask."
+            echo "         Set 'git config --global user.name/user.email' and commit manually."
+            return
+        fi
+
+        echo "Git identity is not configured."
+        if [ -z "$name" ]; then
+            printf "  user.name: "
+            read -r name
+        fi
+        if [ -z "$email" ]; then
+            printf "  user.email: "
+            read -r email
+        fi
+    fi
+
+    if [ -n "$name" ] && [ -n "$email" ]; then
+        git config user.name "$name"
+        git config user.email "$email"
+    else
+        SKIP_COMMIT=true
+        echo "Warning: empty git identity; skipping the initial commit."
+    fi
+}
+
 init_git() {
     git init -b main
     echo "Initializing Git..."
+    configure_git_identity
     if [ "$LANG_TYPE" = "c-cpp" ] && { [ "$HYBRID" = "true" ] || [ "$PURE" = "true" ]; }; then
         git submodule add https://github.com/google/googletest.git libraries/googletest
         echo "googletest added as submodule"
@@ -211,7 +248,11 @@ init_git() {
     # pre-commit hooks are installed automatically by postCreateCommand when the dev container starts
 
     git add .
-    git commit -m "feat: initial commit from template"
+    if [ "$SKIP_COMMIT" = true ]; then
+        echo "Skipping the initial commit (no git identity)."
+    else
+        git commit -m "feat: initial commit from template"
+    fi
 }
 
 
