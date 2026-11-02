@@ -1,0 +1,65 @@
+{
+  "name": "${localWorkspaceFolderBasename} - Verilog / FPGA",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "runArgs": [
+    "--privileged"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "Alibaba-Cloud.tongyi-lingma",
+        "HarcoChen.dsh-vsc-integration",
+        "teros-technology.teroshdl",
+        "lramseyer.vaporview",
+        "formulahendry.code-runner",
+        "yzhang.markdown-all-in-one",
+        "manuth.markdown-converter",
+        "takumii.markdowntable",
+        "redhat.vscode-yaml",
+        "meezilla.json",
+        "ms-azuretools.vscode-docker",
+        "ms-azuretools.vscode-containers",
+        "eamodio.gitlens",
+        "mhutchie.git-graph",
+        "streetsidesoftware.code-spell-checker",
+        "aaron-bond.better-comments",
+        "DavidAnson.vscode-markdownlint",
+        "GitHub.vscode-pull-request-github"
+      ],
+      "settings": {
+        "editor.formatOnSave": false,
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": { "path": "/bin/zsh" },
+          "bash": { "path": "/bin/bash" }
+        },
+        "files.eol": "\n",
+        "files.insertFinalNewline": true,
+        "files.trimTrailingWhitespace": true,
+        "terminal.integrated.fontFamily": "CaskaydiaCove Nerd Font",
+        "fpga.quartusBin": "/opt/intelFPGA/13.0sp1/quartus/bin",
+        "fpga.cable": "usb-blaster",
+        "verilog.linting.linter": "verilator",
+        "verilog.linting.verilator.arguments": "--lint-only -Wall"
+      }
+    }
+  },
+  "remoteUser": "vscode",
+  "mounts": [
+    "source=${localWorkspaceFolderBasename}-bashhistory,target=/commandhistory,type=volume",
+    "source=${localWorkspaceFolderBasename}-claude-config,target=/home/vscode/.claude,type=volume",
+    "source=${localEnv:HOME}/.config/gh,target=/home/vscode/.config/gh,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.dsh/.credentials.yaml,target=/home/vscode/.dsh/.credentials.yaml,type=bind,consistency=cached",
+    "source=/opt/intelFPGA,target=/opt/intelFPGA,type=bind,readonly",
+    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind"
+  ],
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
+    "DEVCONTAINER": "true",
+    "DISPLAY": "${localEnv:DISPLAY}"
+  },
+  "postCreateCommand": "git config --global credential.helper '!gh auth git-credential' && claude --version && dsh --version && pre-commit install && pre-commit install --hook-type commit-msg"
+}
