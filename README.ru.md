@@ -166,10 +166,18 @@ new-project [--help] <язык> <тип> [устройство] <путь>
 Опции:
   --dev-container      Сгенерировать Dev Container (.devcontainer/devcontainer.json)
   --no-dev-container   Только контейнер сборки, без Dev Container (по умолчанию)
+  --no-vscode          Убрать VS Code-специфику (.vscode/, customizations.vscode)
+  --no-container       Без Docker: удалить .devcontainer/ и запускать таски на хосте
   --host-network       Собирать образ с --network=host (по умолчанию)
   --no-host-network    Собирать образ со стандартной сетью Docker
   --help, -h           Показать эту справку и выйти
 ```
+
+> **`--no-container`:** проект создаётся вообще без Docker. Все таски выполняются
+> прямо на хосте, поэтому там должен быть установлен весь тулчейн
+> (clang/cmake/ninja, python + uv, PlatformIO или Quartus/iverilog/verilator —
+> в зависимости от шаблона). Настраивать после этого ничего не нужно: таски
+> контейнера и обёртка `run.sh` удаляются.
 
 ---
 

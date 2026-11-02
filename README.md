@@ -166,10 +166,18 @@ PlatformIO devices (other):
 Options:
   --dev-container      Generate a Dev Container (.devcontainer/devcontainer.json)
   --no-dev-container   Build-only container, no Dev Container (default)
+  --no-vscode          Remove VS Code specifics (.vscode/, customizations.vscode)
+  --no-container       No Docker: drop .devcontainer/ and run tasks on the host
   --host-network       Build the image with --network=host (default)
   --no-host-network    Build the image with the default Docker network
   --help, -h           Show this help and exit
 ```
+
+> **`--no-container`:** the project is generated without Docker at all. Every task
+> runs directly on the host, so the whole toolchain has to be installed there
+> (clang/cmake/ninja, python + uv, PlatformIO, or Quartus/iverilog/verilator —
+> depending on the template). There is nothing to configure afterwards: the
+> container tasks and the `run.sh` wrapper are removed.
 
 ---
 
