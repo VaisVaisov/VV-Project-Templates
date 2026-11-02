@@ -11,12 +11,31 @@ Thumbs.db
 Desktop.ini
 
 # ===================================
-# === TODO: Add language-specific ignores ===
+# === Verilog / FPGA ===
 # ===================================
-# Example for Python:
-# .venv/
-# __pycache__/
-# *.pyc
+# Quartus build artifacts
+quartus/db/
+quartus/incremental_db/
+quartus/output_files/
+*.qws
+*.rpt
+*.summary
+*.done
+*.sld
+*.sof
+*.svf
+
+# Simulation artifacts
+build/
+*.vcd
+*.fst
+*.lxt
+*.lxt2
+*.wlf
+
+# Quartus project backups
+*.qpf.bak
+*.qsf.bak
 
 # ===================================
 # === Secrets / Keys ===
