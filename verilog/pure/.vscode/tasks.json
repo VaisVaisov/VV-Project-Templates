@@ -117,6 +117,22 @@
       "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
     },
     {
+      "label": "Sim: Quartus functional (VWF)",
+      "type": "shell",
+      "command": "bash .devcontainer/run.sh --quartus \"cd quartus && test -d /opt/intelFPGA || { echo 'WARNING: Quartus not found in /opt/intelFPGA on the host'; exit 1; }; test -f ${workspaceFolderBasename}.vwf || { echo 'WARNING: no ${workspaceFolderBasename}.vwf stimulus file'; echo 'Create it in the Quartus GUI: File -> New -> Vector Waveform File'; exit 1; }; ${config:fpga.quartusBin}/quartus_map --generate_functional_sim_netlist ${workspaceFolderBasename} && ${config:fpga.quartusBin}/quartus_sim ${workspaceFolderBasename} --mode=functional --simulation_results_format=VWF\"",
+      "problemMatcher": [],
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
+      "label": "Sim: Quartus timing (VWF)",
+      "type": "shell",
+      "command": "bash .devcontainer/run.sh --quartus \"cd quartus && test -d /opt/intelFPGA || { echo 'WARNING: Quartus not found in /opt/intelFPGA on the host'; exit 1; }; test -f ${workspaceFolderBasename}.vwf || { echo 'WARNING: no ${workspaceFolderBasename}.vwf stimulus file'; echo 'Create it in the Quartus GUI: File -> New -> Vector Waveform File'; exit 1; }; ${config:fpga.quartusBin}/quartus_sta ${workspaceFolderBasename} && ${config:fpga.quartusBin}/quartus_sim ${workspaceFolderBasename} --mode=timing --simulation_results_format=VWF\"",
+      "problemMatcher": [],
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false }
+    },
+    {
       "label": "Monitor: waveform (GTKWave)",
       "type": "shell",
       "command": "bash .devcontainer/run.sh --gui \"test -f build/dump.vcd || { echo 'Run simulation first'; exit 1; }; gtkwave build/dump.vcd\"",
