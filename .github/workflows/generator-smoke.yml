@@ -1,0 +1,74 @@
+name: Generator smoke test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  scaffold:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+
+    steps:
+      - name: Setup Arch Linux
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm git python python-pip
+
+      - uses: actions/checkout@v6
+
+      - name: Stub docker and uv
+        run: |
+          mkdir -p /tmp/stubs
+          printf '#!/bin/sh\nexit 1\n' > /tmp/stubs/docker
+          printf '#!/bin/sh\nexit 0\n' > /tmp/stubs/uv
+          chmod +x /tmp/stubs/docker /tmp/stubs/uv
+
+      - name: Scaffold C/C++ pure
+        run: |
+          PATH="/tmp/stubs:$PATH" ./new-project.sh --c-cpp --pure /tmp/t-cpp
+
+      - name: Scaffold Python pure
+        run: |
+          PATH="/tmp/stubs:$PATH" ./new-project.sh --python --pure /tmp/t-py
+
+      - name: Scaffold PlatformIO
+        run: |
+          PATH="/tmp/stubs:$PATH" ./new-project.sh --c-cpp --platformio --esp32-devkit /tmp/t-pio
+
+      - name: Scaffold Verilog
+        run: |
+          PATH="/tmp/stubs:$PATH" ./new-project.sh --verilog --pure /tmp/t-v
+
+      - name: Verilog must reject --dev-container
+        run: |
+          if PATH="/tmp/stubs:$PATH" ./new-project.sh --verilog --pure --dev-container /tmp/t-v-dc
+          then
+            echo "ERROR: --verilog --dev-container should fail"
+            exit 1
+          fi
+
+      - name: Verify scaffolding
+        run: |
+          set -eu
+
+          for project in /tmp/t-cpp /tmp/t-py /tmp/t-pio /tmp/t-v
+          do
+            test -L "$project/CLAUDE.md"
+            test -L "$project/QWEN.md"
+            test -L "$project/AGENTS.md"
+            test -f "$project/.devcontainer/Dockerfile"
+            test -x "$project/.devcontainer/run.sh"
+            test ! -f "$project/.devcontainer/devcontainer.json"
+            test "$(git -C "$project" branch --show-current)" = "main"
+          done
+
+          test -f /tmp/t-cpp/CMakeLists.txt
+          test -f /tmp/t-py/pyproject.toml
+          test -f /tmp/t-pio/platformio.ini
+          test -f /tmp/t-pio/.gitignore
+          test -f /tmp/t-pio/.pre-commit-config.yaml
+          test -f /tmp/t-pio/.github/workflows/ci.yml
+          test -f /tmp/t-v/rtl/blink.v
+          test -f /tmp/t-v/quartus/t-v.qpf
+          test ! -e /tmp/t-v-dc
